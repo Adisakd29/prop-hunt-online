@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>เกมซ่อนหาของ — Prop Hunt Online</title>
+<meta name="description" content="เกมซ่อนตัวเป็นสิ่งของ 3 มิติ ในห้างสรรพสินค้า ห้องละ 30 คน มีบอท กาชา ระบบเพื่อน และแชท">
+<meta name="theme-color" content="#2f7fd4">
+<link rel="icon" href="icon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=20260910">
+</head>
+<body>
+
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <defs>
+    <linearGradient id="cEdge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8a417"/><stop offset="1" stop-color="#9c6c05"/>
+    </linearGradient>
+    <radialGradient id="cFace" cx="34%" cy="28%" r="78%">
+      <stop offset="0" stop-color="#fff3bd"/><stop offset="45%" stop-color="#ffcf47"/>
+      <stop offset="100%" stop-color="#e09a10"/>
+    </radialGradient>
+    <linearGradient id="cInner" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe38a"/><stop offset="100%" stop-color="#f0ae1c"/>
+    </linearGradient>
+    <radialGradient id="hGrad" cx="34%" cy="26%" r="80%">
+      <stop offset="0" stop-color="#ff9aa6"/><stop offset="45%" stop-color="#ff4d5e"/>
+      <stop offset="100%" stop-color="#b81f33"/>
+    </radialGradient>
+    <linearGradient id="crateTop" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0c184"/><stop offset="1" stop-color="#d8a05a"/>
+    </linearGradient>
+    <linearGradient id="copBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a72c4"/><stop offset="1" stop-color="#22406f"/>
+    </linearGradient>
+
+    <symbol id="coin" viewBox="0 0 64 64">
+      <ellipse cx="32" cy="42" rx="25" ry="19" fill="#8a5f04"/>
+      <ellipse cx="32" cy="38" rx="25" ry="19" fill="#c8890a"/>
+      <ellipse cx="32" cy="32" rx="25" ry="19" fill="url(#cEdge)"/>
+      <ellipse cx="32" cy="31" rx="25" ry="19" fill="url(#cFace)"/>
+      <ellipse cx="32" cy="31" rx="18.5" ry="13.6" fill="none" stroke="#c9930f" stroke-width="1.6" opacity=".7"/>
+      <ellipse cx="32" cy="31" rx="17" ry="12.4" fill="url(#cInner)"/>
+      <path d="M32 21.5c-4 0-6.8 2-6.8 4.7 0 5.6 12.6 3.4 12.6 8.6 0 2.8-2.9 4.7-6.6 4.7"
+            fill="none" stroke="#a9760a" stroke-width="3.1" stroke-linecap="round"/>
+      <path d="M32 18.6v4M32 38.4v4" stroke="#a9760a" stroke-width="3.1" stroke-linecap="round"/>
+      <ellipse cx="22" cy="24" rx="7" ry="3.8" fill="#fffbe6" opacity=".8"/>
+      <ellipse cx="43" cy="37" rx="4" ry="2.2" fill="#fff3b8" opacity=".45"/>
+    </symbol>
+
+    <symbol id="crate" viewBox="0 0 64 64">
+      <ellipse cx="32" cy="57" rx="22" ry="5" fill="#1e2530" opacity=".22"/>
+      <path d="M32 6 58 19v26L32 58 6 45V19z" fill="#b8823f"/>
+      <path d="M32 6 58 19 32 32 6 19z" fill="url(#crateTop)"/>
+      <path d="M32 32v26L6 45V19z" fill="#9c6a30"/>
+      <path d="M32 32v26l26-13V19z" fill="#a9773a"/>
+      <path d="M6 19 32 32 58 19" fill="none" stroke="#7d5322" stroke-width="2.4"/>
+      <path d="M14 25v25M50 25v25" stroke="#7d5322" stroke-width="3" opacity=".5"/>
+      <path d="M32 6 58 19 32 32 6 19z" fill="none" stroke="#7d5322" stroke-width="2.4"/>
+      <path d="M20 12.5 46 25.5" stroke="#e8c48e" stroke-width="2.6" opacity=".7"/>
+    </symbol>
+
+    <symbol id="cop" viewBox="0 0 64 64">
+      <ellipse cx="32" cy="58" rx="20" ry="5" fill="#1e2530" opacity=".22"/>
+      <path d="M14 57V42a18 18 0 0 1 36 0v15z" fill="url(#copBody)"/>
+      <path d="M14 57V42a18 18 0 0 1 9-15.6V57z" fill="#1b3358" opacity=".55"/>
+      <rect x="20" y="14" width="24" height="22" rx="7" fill="#f6d2ac"/>
+      <rect x="20" y="14" width="8" height="22" rx="7" fill="#e5bb90"/>
+      <rect x="13" y="5" width="38" height="11" rx="5" fill="#2f4f8f"/>
+      <rect x="14" y="15" width="36" height="6" rx="3" fill="#1d3765"/>
+      <rect x="28" y="6.5" width="8" height="7" rx="2" fill="#f0b429"/>
+      <rect x="25" y="23" width="5" height="7" rx="2.2" fill="#27272e"/>
+      <rect x="34" y="23" width="5" height="7" rx="2.2" fill="#27272e"/>
+      <rect x="28" y="44" width="8" height="9" rx="2.4" fill="#f0b429"/>
+      <path d="M17 10 47 6" stroke="#5c82cc" stroke-width="2" opacity=".5"/>
+    </symbol>
+
+    <symbol id="heart" viewBox="0 0 64 64">
+      <path d="M32 57S6 42 6 24.5A14 14 0 0 1 32 16a14 14 0 0 1 26 8.5C58 42 32 57 32 57z" fill="#8f1526"/>
+      <path d="M32 54S9 40 9 24.5A12.5 12.5 0 0 1 32 17.5a12.5 12.5 0 0 1 23 7C55 40 32 54 32 54z" fill="url(#hGrad)"/>
+      <path d="M20 22c-3 2.4-4 5.6-3 9 3.2-4.6 6-6.6 9.4-7.6 2-.6 1.6-3.2-.4-3.4-2-.2-4 .6-6 2z" fill="#fff" opacity=".55"/>
+    </symbol>
+
+    </defs>
+</svg>
+
+<div id="flash"></div>
+<div id="toast" class="hidden"></div>
+<div id="rotate">หมุนจอเป็นแนวนอนจะเล่นถนัดกว่า</div>
+<div id="boot"><div class="spin"></div><p>กำลังโหลดห้าง…</p></div>
+
+<!-- ================= HUD ในเกม ================= -->
+<div id="hud" class="hidden">
+  <div class="topbar">
+    <div class="pill count hiders"><i class="ico3d hicon3" style="--c:1"></i><svg class="hicon fb" viewBox="0 0 64 64"><use href="#crate"/></svg><span id="hidersLeft">0</span></div>
+    <div class="clock plain">
+      <span id="timer">0:00</span><em id="phaseName" class="hidden">กำลังจะเริ่ม</em>
+    </div>
+    <div class="pill count seekers"><i class="ico3d hicon3" style="--c:0"></i><svg class="hicon fb" viewBox="0 0 64 64"><use href="#cop"/></svg><span id="seekerCount">0</span></div>
+  </div>
+
+  <div id="propChip" class="propchip hidden"><b id="propName"></b></div>
+
+  <span id="roleName" class="hidden"></span>
+  <span id="roleHint" class="hidden"></span>
+  <span id="myScore" class="hidden">0</span>
+  <span id="roleCard" class="hidden"></span>
+
+  <div class="topright">
+    <div class="pill gold"><i class="ico2 coin3" style="--d:0"></i><svg class="coin fb2" viewBox="0 0 64 64"><use href="#coin"/></svg><span id="goldNow">0</span></div>
+    <button id="btnQuit" class="quit" type="button">ออก</button>
+  </div>
+
+  <div class="chatpanel">
+    <ul id="feed"></ul>
+    <div id="chatBox" class="chatrow">
+      <input id="chatInput" maxlength="80" placeholder="พิมพ์แชท… (Enter)" autocomplete="off">
+      <button id="chatSend" type="button">ส่ง</button>
+    </div>
+  </div>
+
+  <div id="vitals" class="vitals hidden">
+    <div class="metaline"><span id="roomTag">ห้อง</span><span id="fps">–</span></div>
+    <div class="xpmini"><i id="gxpFill"></i><span id="gxpText">Lv.1</span></div>
+    <div id="hearts" class="hearts"></div>
+  </div>
+  <div id="stageBanner" class="stagebanner hidden"></div>
+  <div id="waitBox" class="waitbox hidden">เข้ามาระหว่างรอบ — รอรอบถัดไปเริ่มก่อนนะ</div>
+  <div id="roster" class="board hidden"></div>
+
+  <div id="revive" class="revive hidden">
+    <b>โดนจับแล้ว</b>
+    <p>จ่าย <span id="reviveCost">80</span> ทองเพื่อเกิดใหม่เป็นคนซ่อน (ได้ครั้งเดียวต่อรอบ)</p>
+    <button id="btnRevive" class="primary" type="button">เกิดใหม่</button>
+    <em>เหลือเวลาตัดสินใจ <span id="reviveLeft">10</span> วินาที</em>
+  </div>
+
+  <div id="spect" class="spect hidden">คุณถูกจับแล้ว — กำลังดูรอบนี้อยู่</div>
+
+  <div id="specBar" class="specbar hidden">
+    <button id="specPrev" type="button" aria-label="คนก่อนหน้า">‹</button>
+    <span>กำลังดู <b id="specName">—</b></span>
+    <button id="specNext" type="button" aria-label="คนถัดไป">›</button>
+  </div>
+  <div id="lockHint" class="lockhint hidden">ตอนนี้ปุ่มเดินใช้เลื่อนกล้องไปส่องคนอื่น</div>
+
+  <button id="btnLock" type="button" aria-label="ล็อกท่า">
+      <i class="lockimg"></i>
+      <i class="ico3d" style="--c:7"></i>
+      <svg class="fb" viewBox="0 0 32 32"><rect x="7" y="14" width="18" height="13" rx="3" fill="currentColor"/><path d="M11 14v-3.5a5 5 0 0 1 10 0V14" fill="none" stroke="currentColor" stroke-width="3.2"/><circle cx="16" cy="20" r="2.2" fill="#fff"/></svg>
+    </button>
+
+  <button id="btnRun" class="runbtn hidden" type="button" aria-label="วิ่ง">
+    <svg viewBox="0 0 48 48">
+      <path d="M8 33c3-1 5-3 8-7l6-8 5 3-3 6 9 3c2 .7 3 2 3 4l-1 3H8z" fill="currentColor"/>
+      <path d="M8 34h27" stroke="#ffffff" stroke-width="2.4" opacity=".55"/>
+      <circle cx="30" cy="12" r="3.6" fill="currentColor"/>
+      <path d="M19 20l7-4 5 5" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>
+    </svg>
+    <i id="runBar"><b></b></i>
+  </button>
+
+  <button id="btnRoster" class="rosterbtn" type="button" aria-label="ผู้เล่นในห้อง">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.4" fill="currentColor"/><path d="M3 20c0-3.4 2.7-5.6 6-5.6s6 2.2 6 5.6z" fill="currentColor"/><circle cx="17.5" cy="9" r="2.6" fill="currentColor" opacity=".7"/><path d="M14 20c0-2.6 1.9-4.3 3.5-4.3S21 17.4 21 20z" fill="currentColor" opacity=".7"/></svg>
+    </button>
+
+  <div id="touch" class="hidden">
+    <div id="stick"><i id="knob"></i></div>
+
+    <div id="stickHint" class="stickhint">ลากขึ้นลงเพื่อเดิน ลากซ้ายขวาเพื่อหันตัว</div>
+
+
+    <div class="btns">
+      <button id="btnRoll" type="button">
+        <i class="ico2 big" style="--d:1"></i>
+        <svg class="fb2" viewBox="0 0 64 64">
+          <rect x="7" y="30" width="20" height="20" rx="4" fill="currentColor"/>
+          <rect x="37" y="34" width="20" height="13" rx="4" fill="currentColor" opacity=".8"/>
+          <path d="M20 24a14 14 0 0 1 24-4" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+          <path d="M40 14l6 6-7 4" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="rlabel">เปลี่ยนสิ่งของ</span>
+        <small><span id="rollCost">30</span> ทอง</small>
+      </button>
+      <button id="btnJump" type="button">
+        <i class="ico3d big" style="--c:6"></i>
+        <svg class="fb" viewBox="0 0 64 64"><path d="M32 8 52 30h-11v20H23V30H12z" fill="currentColor"/></svg>
+        <span>กระโดด</span>
+      </button>
+      <button id="btnMain" type="button"><i class="ico3d big" style="--c:8"></i><span>ต่อย</span></button>
+    </div>
+  </div>
+</div>
+
+<div id="result" class="panel hidden">
+  <h2 id="resTitle">จบรอบ</h2>
+  <p id="resText"></p>
+  <ol id="resBoard"></ol>
+  <span class="wait">รอบใหม่กำลังเริ่ม…</span>
+</div>
+
+<!-- ================= เข้าสู่ระบบ ================= -->
+<section id="auth" class="cover hidden">
+  <div class="card">
+    <div class="mark" aria-hidden="true"><img src="icon-192.png" alt="" width="132" height="132"></div>
+    <h1>เกมซ่อนหาของ</h1>
+    <p class="tag">ปลอมตัวเป็นสิ่งของในห้างสรรพสินค้า 50 กว่าชนิด<br>ห้องละ 25 คนซ่อน 5 คนหา คนไม่ครบมีบอทมาเล่นด้วย</p>
+
+    <div class="tabs">
+      <button id="tabLogin" class="on" type="button">เข้าสู่ระบบ</button>
+      <button id="tabReg" type="button">สมัครใหม่</button>
+    </div>
+
+    <input id="auName" maxlength="14" placeholder="ชื่อผู้เล่น (3-14 ตัว)" autocomplete="username">
+    <input id="auPw" type="password" maxlength="60" placeholder="รหัสผ่าน" autocomplete="current-password">
+    <button id="auGo" class="primary" type="button">เข้าสู่ระบบ</button>
+    <button id="auGuest" class="ghost" type="button">เล่นแบบไม่สมัคร (ไม่เก็บทอง)</button>
+    <p id="auMsg" class="msg"></p>
+  </div>
+</section>
+
+<!-- ================= ล็อบบี้ ================= -->
+<section id="lobby" class="hidden">
+
+  <div class="lobtop">
+    <div class="lvcard">
+      <button class="lvstar" id="meAvatar" type="button" aria-label="เปลี่ยนรูปประจำตัว"><span id="meAvatarEmoji">🙂</span></button>
+      <div class="lvinfo">
+        <b id="meLv">Lv.1</b><b id="lobRoom" class="lobroom hidden">ห้อง 1</b>
+        <div class="xpbar"><i id="xpFill"></i><span id="xpText">0 / 600</span></div>
+      </div>
+    </div>
+
+    <div class="livebar">
+      <div class="pill count hiders"><i class="ico3d hicon3" style="--c:1"></i><svg class="hicon fb" viewBox="0 0 64 64"><use href="#crate"/></svg><span id="topHiders">0</span></div>
+      <div class="clock plain"><span id="topTimer">--:--</span><em id="topRoom" class="hidden">ห้อง 1</em></div>
+      <div class="pill count seekers"><i class="ico3d hicon3" style="--c:0"></i><svg class="hicon fb" viewBox="0 0 64 64"><use href="#cop"/></svg><span id="topSeekers">0</span></div>
+    </div>
+
+    <div class="lobright">
+      <div class="pill gold big"><i class="ico2 coin3" style="--d:0"></i><svg class="coin fb2" viewBox="0 0 64 64"><use href="#coin"/></svg><span id="meGold">0</span></div>
+      <button id="btnLogout2" class="exitbtn" type="button" aria-label="ออกจากระบบ">⇥</button>
+    </div>
+  </div>
+
+  <div class="whoami"><span id="meName">ผู้เล่น</span></div>
+
+  <div id="roomPanel" class="roompanel hidden">
+    <div class="rphead"><b id="rpTitle">ห้อง 1</b><span id="rpCount">0/30</span></div>
+    <div id="rpList" class="rplist"></div>
+  </div>
+
+  <div class="paneldock">
+    <button id="panelClose" class="pclose" type="button" aria-label="ปิด">✕</button>
+
+    <div id="pHide" class="dpanel hidden">
+      <div class="head"><h2>ทีมซ่อนแอบ</h2><span class="cnt2">มีแล้ว <b id="hideCount">0/0</b></span></div>
+      <p class="muted">เริ่มรอบแล้วระบบจะสุ่มร่างให้จากของที่คุณมี ชิ้นที่ยังไม่มีจะขึ้นเป็นเงาดำ ต้องไปสุ่มที่ร้านค้า</p>
+      <h4 class="grpttl">🏬 ของในห้างสรรพสินค้า <span id="hideCountMall"></span></h4>
+      <div id="propGrid" class="cards"></div>
+      <h4 class="grpttl">🦁 ของในสวนสัตว์ <span id="hideCountZoo"></span></h4>
+      <div id="propGridZoo" class="cards"></div>
+    </div>
+
+    <div id="pSeek" class="dpanel hidden">
+      <div class="head"><h2>ทีมค้นหา</h2><span class="cnt2">มีแล้ว <b id="skinCount">0/0</b></span></div>
+      <p class="muted">สกินที่เลือกไว้จะใช้ตอนคุณเป็นคนหา หรือตอนโดนจับแล้วเปลี่ยนข้าง</p>
+      <div id="skinGrid" class="cards"></div>
+    </div>
+
+    <div id="pShop" class="dpanel hidden">
+      <div class="head"><h2>ร้านค้า</h2><div class="pill gold small"><i class="ico2 coin3" style="--d:0"></i><svg class="coin fb2" viewBox="0 0 64 64"><use href="#coin"/></svg><span id="shopGold">0</span></div></div>
+      <p class="muted">ของทุกชิ้นได้จากการสุ่ม มีโอกาสได้ชิ้นที่มีอยู่แล้ว ถ้าซ้ำจะคืนทองให้ <b id="dupBack">35</b></p>
+      <div class="gbtns">
+        <button id="gachaProp" class="gacha prop" type="button" data-map="mall">
+          <b>สุ่มของห้าง</b><em><i class="ico2 coin3" style="--d:0"></i><svg class="coin fb2" viewBox="0 0 64 64"><use href="#coin"/></svg><span id="costProp">100</span></em>
+        </button>
+        <button id="gachaZoo" class="gacha zoo" type="button" data-map="zoo">
+          <b>สุ่มของสวนสัตว์</b><em><i class="ico2 coin3" style="--d:0"></i><svg class="coin fb2" viewBox="0 0 64 64"><use href="#coin"/></svg><span id="costZoo">100</span></em>
+        </button>
+        <button id="gachaSkin" class="gacha skin" type="button">
+          <b>สุ่มสกิน</b><em><i class="ico2 coin3" style="--d:0"></i><svg class="coin fb2" viewBox="0 0 64 64"><use href="#coin"/></svg><span id="costSkin">150</span></em>
+        </button>
+      </div>
+      <p class="muted" id="shopOwn">—</p>
+    </div>
+
+    <div id="pRooms" class="dpanel hidden">
+      <div class="head"><h2>ห้องที่เปิดอยู่</h2><button id="roomRefresh" class="mini" type="button">รีเฟรช</button></div>
+      <p class="muted">ห้องละไม่เกิน 30 คน ถ้าคนไม่ครบตอนเริ่มรอบ ระบบจะเติมบอทให้</p>
+      <div id="roomList" class="flist"></div>
+    </div>
+
+    <div id="pOptions" class="dpanel hidden">
+      <div class="head"><h2>ตัวเลือก</h2></div>
+      <p class="muted hidden" id="meStats">—</p>
+      <h4>รับทองฟรี</h4>
+      <div class="adbox">
+        <p class="muted" id="adInfo">ดูโฆษณาสั้น ๆ รับทองไปซื้อของในเกม</p>
+        <button id="btnAd" class="avup adbtn" type="button">▶ ดูโฆษณารับทอง</button>
+      </div>
+
+      <h4>เสียง</h4>
+      <div class="langrow">
+        <button id="btnMusic" class="on" type="button">♪ เพลงประกอบ: เปิด</button>
+      </div>
+      <h4 data-i18n="language">ภาษา</h4>
+      <div id="langRow" class="langrow">
+        <button data-lang="th" type="button">ไทย</button>
+        <button data-lang="en" type="button">English</button>
+      </div>
+      <h4 data-i18n="avatar">รูปประจำตัว</h4>
+      <div id="avPreview" class="avpreview"></div>
+      <div id="avCrop" class="avcrop hidden">
+        <canvas id="avCanvas" width="220" height="220"></canvas>
+        <p class="muted">ลากรูปเพื่อเลื่อน เลื่อนแถบเพื่อซูม</p>
+        <input id="avZoom" type="range" min="1" max="3" step="0.01" value="1">
+        <div class="askrow">
+          <button id="avSave" class="primary" type="button">ใช้รูปนี้</button>
+          <button id="avCancel" class="ghost" type="button">ยกเลิก</button>
+        </div>
+      </div>
+      <button id="avUpload" class="avup" type="button">อัปโหลดรูปของตัวเอง</button>
+      <button id="avClear" class="mini" type="button">กลับไปใช้อิโมจิ</button>
+      <input id="avFile" type="file" accept="image/*" style="display:none">
+      <div id="avatarGrid" class="avgrid"></div>
+      <h4>เพื่อน</h4>
+      <div id="frReq"></div>
+      <div id="frList" class="flist"></div>
+      <div class="addrow">
+        <input id="frName" maxlength="14" placeholder="ชื่อเพื่อนที่จะเพิ่ม" autocomplete="off">
+        <button id="frAdd" class="primary" type="button">ส่งคำขอ</button>
+      </div>
+      <button id="btnLogout" class="ghost" type="button">ออกจากระบบ</button>
+    </div>
+  </div>
+
+  <div class="lobbottom">
+    <div class="side">
+      <button class="tabbtn c-blue" data-panel="pSeek" type="button">
+        <i class="ico3d" style="--c:0"></i><svg viewBox="0 0 40 40">
+          <rect x="11" y="11" width="18" height="16" rx="4" fill="#f2c9a0"/>
+          <rect x="8" y="5" width="24" height="8" rx="3" fill="#22406f"/>
+          <rect x="9" y="12" width="22" height="4" rx="2" fill="#1a3357"/>
+          <rect x="17" y="6" width="6" height="5" rx="1.5" fill="#f0b429"/>
+          <rect x="15" y="17" width="4" height="5" rx="1.5" fill="#27272e"/>
+          <rect x="21" y="17" width="4" height="5" rx="1.5" fill="#27272e"/>
+          <circle cx="29" cy="29" r="7.5" fill="none" stroke="#fff" stroke-width="3"/>
+          <path d="M34.5 34.5 39 39" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/>
+        </svg>
+        <span data-i18n="tabSeek">ทีมค้นหา</span>
+      </button>
+      <button class="tabbtn c-green" data-panel="pHide" type="button">
+        <i class="ico3d" style="--c:1"></i><svg viewBox="0 0 40 40">
+          <path d="M6 14 20 7l14 7-14 7z" fill="#e8c48e"/>
+          <path d="M6 14v13l14 7V21z" fill="#c08f4e"/>
+          <path d="M34 14v13l-14 7V21z" fill="#d2a468"/>
+          <path d="M6 14 20 21l14-7" fill="none" stroke="#8a5c2c" stroke-width="1.8"/>
+          <circle cx="27" cy="12" r="6" fill="#fff" opacity=".92"/>
+          <circle cx="27" cy="12" r="2.6" fill="#3fb894"/>
+        </svg>
+        <span data-i18n="tabHide">ทีมซ่อนแอบ</span>
+      </button>
+      <button class="tabbtn c-orange" data-panel="pShop" type="button">
+        <i class="ico3d" style="--c:2"></i><svg viewBox="0 0 40 40">
+          <path d="M6 15h28l-2 18a3 3 0 0 1-3 2.6H11A3 3 0 0 1 8 33z" fill="#fff" opacity=".95"/>
+          <path d="M13 15V11a7 7 0 0 1 14 0v4" fill="none" stroke="#fff" stroke-width="3.4"/>
+          <path d="M4 8h32l-2.5 7h-27z" fill="#e0574a"/>
+          <path d="M9 8h5l-1 7H8zM19 8h5l-.5 7h-5zM29 8h5l-1.5 7h-5z" fill="#fff" opacity=".85"/>
+          <circle cx="20" cy="26" r="5" fill="#f0b429"/>
+          <path d="M20 22.5v7M18 24.4h4M18 27.6h4" stroke="#a9760a" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <span data-i18n="tabShop">ร้านค้า</span>
+      </button>
+    </div>
+
+    <button id="btnPlay" class="joinbtn" type="button">
+      <span class="jicon">
+        <svg viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="27" fill="rgba(255,255,255,.22)"/>
+          <circle cx="32" cy="32" r="21" fill="rgba(255,255,255,.94)"/>
+          <path d="M27 21 45 32 27 43z" fill="#7b3fe4"/>
+        </svg>
+      </span>
+      <span data-i18n="join">เข้าร่วมเกม</span>
+    </button>
+
+    <div class="side">
+      <button id="btnSwitch" class="tabbtn c-cyan" type="button">
+        <i class="ico3d" style="--c:3"></i><svg viewBox="0 0 40 40">
+          <rect x="4" y="9" width="14" height="13" rx="3" fill="#fff" opacity=".92"/>
+          <rect x="22" y="18" width="14" height="13" rx="3" fill="#fff" opacity=".7"/>
+          <path d="M12 26v6h9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M18 29l3.5 3-3.5 3" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M28 14V8h-9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M22 11l3.5-3 3.5 3" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="rotate(180 25.5 9.5)"/>
+        </svg>
+        <span data-i18n="tabSwitch">เปลี่ยนห้อง</span>
+      </button>
+      <button class="tabbtn c-pink" data-panel="pRooms" type="button">
+        <i class="ico3d" style="--c:4"></i><svg viewBox="0 0 40 40">
+          <path d="M20 5 5 17h5v16h20V17h5z" fill="#fff" opacity=".95"/>
+          <rect x="16" y="22" width="8" height="11" rx="1.6" fill="#e8467a"/>
+          <rect x="12" y="19" width="5" height="4" rx="1" fill="#e8467a" opacity=".5"/>
+          <rect x="23" y="19" width="5" height="4" rx="1" fill="#e8467a" opacity=".5"/>
+        </svg>
+        <span data-i18n="tabRoom">ห้อง</span>
+      </button>
+      <button class="tabbtn c-gray" data-panel="pOptions" type="button">
+        <i class="ico3d" style="--c:5"></i><svg viewBox="0 0 40 40">
+          <path d="M20 4.5 24 8h5.5v5.5L33 17.5v5L29.5 26v5.5H24L20 35l-4-3.5h-5.5V26L7 22.5v-5L10.5 14V8.5H16z" fill="#fff" opacity=".92"/>
+          <circle cx="20" cy="20" r="6.5" fill="none" stroke="#7a8494" stroke-width="3.4"/>
+        </svg>
+        <span data-i18n="tabOpt">ตัวเลือก</span>
+      </button>
+    </div>
+  </div>
+
+</section>
+
+<!-- ================= ดูโฆษณา ================= -->
+<div id="adPlay" class="gachabox hidden">
+  <div class="adcard">
+    <div class="adscreen"><span id="adCount">15</span></div>
+    <b>โฆษณา</b>
+    <p>ดูจนจบเพื่อรับ <b id="adGold">60</b> ทอง</p>
+    <div class="adprog"><i id="adFill"></i></div>
+    <button id="adClose" class="ghost" type="button">ปิด</button>
+  </div>
+</div>
+
+<!-- ================= ยืนยันออกจากห้อง ================= -->
+<div id="quitAsk" class="gachabox hidden">
+  <div class="askcard">
+    <b>ออกจากห้องตอนนี้?</b>
+    <p>รอบนี้ยังเล่นอยู่ ถ้าออกกลางคันจะ<b class="warn">โดนหักทอง <span id="quitCost">40</span></b>
+       และไม่ได้ทองกับ XP ของรอบนี้เลย</p>
+    <div class="askrow">
+      <button id="quitYes" class="primary danger" type="button">ออกเลย</button>
+      <button id="quitNo" class="ghost" type="button">เล่นต่อ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= กรอกเลขห้อง ================= -->
+<div id="roomAsk" class="gachabox hidden">
+  <div class="askcard">
+    <b>เข้าห้องตามเลข</b>
+    <p>พิมพ์เลขห้องที่อยากเข้า ถ้ายังไม่มีห้องนั้นระบบจะเปิดให้ใหม่</p>
+    <input id="roomNo" type="number" inputmode="numeric" min="1" max="200" placeholder="เช่น 7">
+    <div class="askrow">
+      <button id="roomGo" class="primary" type="button">เข้าห้องนี้</button>
+      <button id="roomCancel" class="ghost" type="button">ยกเลิก</button>
+    </div>
+    <div id="roomQuick" class="quick"></div>
+  </div>
+</div>
+
+<!-- ================= ผลการสุ่ม ================= -->
+<div id="gachaBox" class="gachabox hidden">
+  <div class="gcard" id="gachaCard">
+    <img id="gachaImg" alt="">
+    <b id="gachaName">กำลังสุ่ม…</b>
+    <em id="gachaTier"></em>
+    <p id="gachaMsg"></p>
+    <button id="gachaClose" class="primary" type="button">ตกลง</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var m = document.getElementById('auMsg');
+  function show(t) { if (m) { m.textContent = t; m.className = 'msg bad'; } var b=document.getElementById('boot'); if(b) b.classList.add('hidden'); }
+  addEventListener('error', function (e) {
+    if (e.target && e.target !== window && (e.target.src || e.target.href)) {
+      var u = e.target.src || e.target.href;
+      show('โหลดไฟล์ไม่สำเร็จ: ' + u.split('/').slice(-2).join('/'));
+    } else if (e.message) show('เกิดข้อผิดพลาด: ' + e.message);
+  }, true);
+  addEventListener('unhandledrejection', function (e) {
+    show('เกิดข้อผิดพลาด: ' + ((e.reason && e.reason.message) || e.reason));
+  });
+  setTimeout(function () {
+    if (typeof io === 'undefined') {
+      show('โหลด socket.io ไม่ได้ — ต้องเปิดผ่านเซิร์ฟเวอร์ (npm start แล้วเข้า localhost:3000)');
+    }
+  }, 8000);
+})();
+</script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="module" src="app.js?v=20260910"></script>
+</body>
+</html>

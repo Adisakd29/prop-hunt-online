@@ -1,0 +1,1224 @@
+{
+  "meta": {
+    "name": "ห้างสรรพสินค้า 3 ชั้น",
+    "units": "meters",
+    "floorSize": {
+      "w": 64,
+      "d": 40
+    },
+    "floorHeight": 5,
+    "origin": "มุมล่างซ้าย (x ไปขวา, z ไปหลัง/เหนือ), y = ความสูง"
+  },
+  "propPalettes": {
+    "super": [
+      "shelf_tall",
+      "shelf_short",
+      "cart",
+      "basket",
+      "fruit_crate",
+      "water_pack",
+      "sign_board",
+      "freezer",
+      "trash_bin"
+    ],
+    "cafe": [
+      "chair",
+      "round_table",
+      "coffee_machine",
+      "cup",
+      "cake_stand",
+      "plant_pot",
+      "menu_board",
+      "stool"
+    ],
+    "fashion": [
+      "mannequin",
+      "clothes_rack",
+      "shoe_box",
+      "mirror",
+      "hanger_bag",
+      "bench",
+      "sale_sign"
+    ],
+    "electro": [
+      "tv_box",
+      "tv_stand",
+      "speaker",
+      "pc_tower",
+      "phone_stand",
+      "vending_machine",
+      "cable_reel"
+    ],
+    "food": [
+      "food_tray",
+      "long_table",
+      "chair",
+      "trash_bin",
+      "soda_fridge",
+      "plant_pot",
+      "signboard"
+    ],
+    "cinema": [
+      "popcorn_machine",
+      "poster_stand",
+      "velvet_rope",
+      "cinema_seat",
+      "trash_bin",
+      "ticket_kiosk"
+    ],
+    "storage": [
+      "cardboard_box",
+      "wooden_crate",
+      "barrel",
+      "pallet",
+      "mop_bucket",
+      "ladder"
+    ],
+    "restroom": [
+      "trash_bin",
+      "hand_dryer",
+      "mop_bucket",
+      "sign_board"
+    ],
+    "atrium": [
+      "plant_pot",
+      "bench",
+      "fountain_light",
+      "info_kiosk",
+      "banner_stand",
+      "trash_bin"
+    ],
+    "rooftop": [
+      "ac_unit",
+      "pipe",
+      "barrel",
+      "water_tank",
+      "cardboard_box"
+    ]
+  },
+  "spawns": {
+    "hider": [
+      {
+        "floor": 1,
+        "x": 32,
+        "z": 2
+      }
+    ],
+    "seeker": [
+      {
+        "floor": 1,
+        "x": 51,
+        "z": 31
+      },
+      {
+        "floor": 3,
+        "x": 4,
+        "z": 34
+      }
+    ]
+  },
+  "escalators": [
+    {
+      "id": "esc_left",
+      "from": 1,
+      "to": 2,
+      "x": 22,
+      "z": 22,
+      "dir": "north"
+    },
+    {
+      "id": "esc_right",
+      "from": 1,
+      "to": 2,
+      "x": 42,
+      "z": 22,
+      "dir": "north"
+    },
+    {
+      "id": "esc_center",
+      "from": 2,
+      "to": 3,
+      "x": 32,
+      "z": 20,
+      "dir": "north"
+    },
+    {
+      "id": "stairs_back",
+      "from": 1,
+      "to": 3,
+      "x": 60,
+      "z": 36,
+      "type": "stairs"
+    },
+    {
+      "id": "stairs_front",
+      "from": 1,
+      "to": 2,
+      "x": 4,
+      "z": 4,
+      "type": "stairs"
+    }
+  ],
+  "floors": [
+    {
+      "level": 1,
+      "zones": [
+        {
+          "id": "entrance",
+          "name": "ทางเข้า",
+          "palette": "atrium",
+          "rect": {
+            "x": 24,
+            "z": 0,
+            "w": 16,
+            "d": 8
+          },
+          "floorColor": "#d9d2c5",
+          "props": [
+            {
+              "type": "plant_pot",
+              "x": 25,
+              "z": 3
+            },
+            {
+              "type": "plant_pot",
+              "x": 39,
+              "z": 3
+            },
+            {
+              "type": "info_kiosk",
+              "x": 32,
+              "z": 6,
+              "rot": 180
+            }
+          ]
+        },
+        {
+          "id": "supermarket",
+          "name": "ซูเปอร์มาร์เก็ต",
+          "palette": "super",
+          "rect": {
+            "x": 2,
+            "z": 8,
+            "w": 22,
+            "d": 24
+          },
+          "floorColor": "#e8e3d8",
+          "notes": "ชั้นวางไม่เรียงตาราง: 3 แถวยาวซ้าย + โซนผลไม้โล่งขวา + ตู้แช่ติดผนังหลัง",
+          "props": [
+            {
+              "type": "shelf_tall",
+              "x": 5,
+              "z": 12,
+              "rot": 0,
+              "len": 8
+            },
+            {
+              "type": "shelf_tall",
+              "x": 5,
+              "z": 18,
+              "rot": 0,
+              "len": 8
+            },
+            {
+              "type": "shelf_tall",
+              "x": 5,
+              "z": 24,
+              "rot": 0,
+              "len": 6
+            },
+            {
+              "type": "shelf_short",
+              "x": 16,
+              "z": 11,
+              "rot": 90
+            },
+            {
+              "type": "shelf_short",
+              "x": 20,
+              "z": 15,
+              "rot": 90
+            },
+            {
+              "type": "fruit_crate",
+              "x": 17,
+              "z": 20
+            },
+            {
+              "type": "fruit_crate",
+              "x": 19,
+              "z": 21
+            },
+            {
+              "type": "fruit_crate",
+              "x": 18,
+              "z": 23
+            },
+            {
+              "type": "freezer",
+              "x": 6,
+              "z": 30,
+              "rot": 0,
+              "len": 10
+            },
+            {
+              "type": "cart",
+              "x": 22,
+              "z": 9
+            },
+            {
+              "type": "cart",
+              "x": 23,
+              "z": 10
+            },
+            {
+              "type": "basket",
+              "x": 12,
+              "z": 27
+            },
+            {
+              "type": "water_pack",
+              "x": 14,
+              "z": 29
+            },
+            {
+              "type": "trash_bin",
+              "x": 21,
+              "z": 31
+            }
+          ],
+          "hidingSpots": [
+            {
+              "x": 9,
+              "z": 15,
+              "label": "ระหว่างชั้นวางแถว 1-2"
+            },
+            {
+              "x": 18,
+              "z": 22,
+              "label": "ในกองผลไม้"
+            },
+            {
+              "x": 12,
+              "z": 31,
+              "label": "หลังตู้แช่"
+            }
+          ]
+        },
+        {
+          "id": "back_storage_1",
+          "name": "ห้องเก็บของ (หลังซูเปอร์)",
+          "palette": "storage",
+          "rect": {
+            "x": 2,
+            "z": 32,
+            "w": 10,
+            "d": 6
+          },
+          "floorColor": "#b8b0a5",
+          "door": {
+            "x": 8,
+            "z": 32
+          },
+          "props": [
+            {
+              "type": "wooden_crate",
+              "x": 3,
+              "z": 34
+            },
+            {
+              "type": "wooden_crate",
+              "x": 3,
+              "z": 36
+            },
+            {
+              "type": "cardboard_box",
+              "x": 6,
+              "z": 36
+            },
+            {
+              "type": "pallet",
+              "x": 9,
+              "z": 35
+            },
+            {
+              "type": "barrel",
+              "x": 10,
+              "z": 37
+            }
+          ],
+          "hidingSpots": [
+            {
+              "x": 4,
+              "z": 35,
+              "label": "มุมกองลัง",
+              "popular": true
+            }
+          ]
+        },
+        {
+          "id": "atrium_1",
+          "name": "ลานกลาง",
+          "palette": "atrium",
+          "rect": {
+            "x": 24,
+            "z": 8,
+            "w": 16,
+            "d": 30
+          },
+          "floorColor": "#cfc8bb",
+          "props": [
+            {
+              "type": "fountain_light",
+              "x": 32,
+              "z": 30
+            },
+            {
+              "type": "bench",
+              "x": 27,
+              "z": 14
+            },
+            {
+              "type": "bench",
+              "x": 37,
+              "z": 14,
+              "rot": 180
+            },
+            {
+              "type": "plant_pot",
+              "x": 25,
+              "z": 20
+            },
+            {
+              "type": "plant_pot",
+              "x": 39,
+              "z": 20
+            },
+            {
+              "type": "banner_stand",
+              "x": 30,
+              "z": 10
+            },
+            {
+              "type": "trash_bin",
+              "x": 34,
+              "z": 10
+            }
+          ]
+        },
+        {
+          "id": "cafe",
+          "name": "คาเฟ่",
+          "palette": "cafe",
+          "rect": {
+            "x": 40,
+            "z": 8,
+            "w": 16,
+            "d": 16
+          },
+          "floorColor": "#d8b99a",
+          "notes": "โต๊ะกระจายไม่เท่ากัน เคาน์เตอร์ตัวแอลติดผนังเหนือ",
+          "props": [
+            {
+              "type": "counter",
+              "x": 44,
+              "z": 21,
+              "rot": 0,
+              "len": 8
+            },
+            {
+              "type": "counter",
+              "x": 52,
+              "z": 18,
+              "rot": 90,
+              "len": 4
+            },
+            {
+              "type": "coffee_machine",
+              "x": 46,
+              "z": 22
+            },
+            {
+              "type": "cake_stand",
+              "x": 50,
+              "z": 22
+            },
+            {
+              "type": "round_table",
+              "x": 43,
+              "z": 12
+            },
+            {
+              "type": "round_table",
+              "x": 49,
+              "z": 11
+            },
+            {
+              "type": "round_table",
+              "x": 53,
+              "z": 14
+            },
+            {
+              "type": "chair",
+              "x": 42,
+              "z": 13
+            },
+            {
+              "type": "chair",
+              "x": 44,
+              "z": 11
+            },
+            {
+              "type": "chair",
+              "x": 48,
+              "z": 10
+            },
+            {
+              "type": "chair",
+              "x": 50,
+              "z": 12
+            },
+            {
+              "type": "chair",
+              "x": 54,
+              "z": 15
+            },
+            {
+              "type": "stool",
+              "x": 45,
+              "z": 19
+            },
+            {
+              "type": "plant_pot",
+              "x": 41,
+              "z": 9
+            },
+            {
+              "type": "menu_board",
+              "x": 54,
+              "z": 9
+            }
+          ],
+          "hidingSpots": [
+            {
+              "x": 47,
+              "z": 22,
+              "label": "หลังเคาน์เตอร์",
+              "popular": true
+            }
+          ]
+        },
+        {
+          "id": "restroom_1",
+          "name": "ห้องน้ำ",
+          "palette": "restroom",
+          "rect": {
+            "x": 56,
+            "z": 8,
+            "w": 6,
+            "d": 10
+          },
+          "floorColor": "#cfd8dc",
+          "door": {
+            "x": 56,
+            "z": 12
+          },
+          "props": [
+            {
+              "type": "trash_bin",
+              "x": 57,
+              "z": 9
+            },
+            {
+              "type": "mop_bucket",
+              "x": 61,
+              "z": 17
+            },
+            {
+              "type": "hand_dryer",
+              "x": 58,
+              "z": 17
+            }
+          ]
+        },
+        {
+          "id": "loading_dock",
+          "name": "ทางออก / ขนส่ง",
+          "palette": "storage",
+          "rect": {
+            "x": 40,
+            "z": 24,
+            "w": 22,
+            "d": 14
+          },
+          "floorColor": "#9e9e9e",
+          "props": [
+            {
+              "type": "pallet",
+              "x": 44,
+              "z": 28
+            },
+            {
+              "type": "cardboard_box",
+              "x": 44,
+              "z": 29
+            },
+            {
+              "type": "cardboard_box",
+              "x": 45,
+              "z": 28
+            },
+            {
+              "type": "barrel",
+              "x": 58,
+              "z": 26
+            },
+            {
+              "type": "barrel",
+              "x": 59,
+              "z": 27
+            },
+            {
+              "type": "ladder",
+              "x": 60,
+              "z": 34
+            },
+            {
+              "type": "wooden_crate",
+              "x": 50,
+              "z": 35
+            }
+          ],
+          "hidingSpots": [
+            {
+              "x": 45,
+              "z": 29,
+              "label": "ในกองกล่องบนพาเลท"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "voids": [
+        {
+          "x": 24,
+          "z": 8,
+          "w": 16,
+          "d": 30,
+          "note": "ช่องโล่งมองลงลานชั้น 1 มีราวกันตก"
+        }
+      ],
+      "zones": [
+        {
+          "id": "fashion",
+          "name": "แฟชั่น",
+          "palette": "fashion",
+          "rect": {
+            "x": 2,
+            "z": 8,
+            "w": 22,
+            "d": 24
+          },
+          "floorColor": "#f2d7e0",
+          "notes": "ราวเสื้อวางเฉียง + ห้องลองเสื้อ 3 ห้องติดผนังซ้าย",
+          "props": [
+            {
+              "type": "fitting_room",
+              "x": 3,
+              "z": 14
+            },
+            {
+              "type": "fitting_room",
+              "x": 3,
+              "z": 18
+            },
+            {
+              "type": "fitting_room",
+              "x": 3,
+              "z": 22
+            },
+            {
+              "type": "clothes_rack",
+              "x": 10,
+              "z": 12,
+              "rot": 30
+            },
+            {
+              "type": "clothes_rack",
+              "x": 15,
+              "z": 14,
+              "rot": -20
+            },
+            {
+              "type": "clothes_rack",
+              "x": 11,
+              "z": 22,
+              "rot": 60
+            },
+            {
+              "type": "clothes_rack",
+              "x": 19,
+              "z": 26,
+              "rot": 0
+            },
+            {
+              "type": "mannequin",
+              "x": 8,
+              "z": 9
+            },
+            {
+              "type": "mannequin",
+              "x": 20,
+              "z": 9
+            },
+            {
+              "type": "mannequin",
+              "x": 14,
+              "z": 19
+            },
+            {
+              "type": "shoe_box",
+              "x": 17,
+              "z": 30
+            },
+            {
+              "type": "shoe_box",
+              "x": 18,
+              "z": 30
+            },
+            {
+              "type": "shoe_box",
+              "x": 17,
+              "z": 31
+            },
+            {
+              "type": "mirror",
+              "x": 22,
+              "z": 20,
+              "rot": 90
+            },
+            {
+              "type": "bench",
+              "x": 12,
+              "z": 28
+            },
+            {
+              "type": "sale_sign",
+              "x": 6,
+              "z": 30
+            }
+          ],
+          "hidingSpots": [
+            {
+              "x": 3,
+              "z": 18,
+              "label": "ในห้องลองเสื้อ",
+              "popular": true
+            },
+            {
+              "x": 17,
+              "z": 30,
+              "label": "ปนกับกองกล่องรองเท้า"
+            }
+          ]
+        },
+        {
+          "id": "storage_2",
+          "name": "ห้องลับ (หลังแฟชั่น)",
+          "palette": "storage",
+          "rect": {
+            "x": 2,
+            "z": 32,
+            "w": 8,
+            "d": 6
+          },
+          "floorColor": "#b8b0a5",
+          "door": {
+            "x": 9,
+            "z": 33
+          },
+          "hidden": true,
+          "props": [
+            {
+              "type": "cardboard_box",
+              "x": 4,
+              "z": 34
+            },
+            {
+              "type": "hanger_bag",
+              "x": 7,
+              "z": 36
+            },
+            {
+              "type": "mop_bucket",
+              "x": 3,
+              "z": 37
+            }
+          ]
+        },
+        {
+          "id": "electronics",
+          "name": "อิเล็กทรอนิกส์",
+          "palette": "electro",
+          "rect": {
+            "x": 40,
+            "z": 8,
+            "w": 22,
+            "d": 24
+          },
+          "floorColor": "#d6e2ef",
+          "notes": "ผนังทีวีติดผนังเหนือ เกาะกลางเป็นโต๊ะโชว์ ตู้กดน้ำที่มุม",
+          "props": [
+            {
+              "type": "tv_stand",
+              "x": 44,
+              "z": 30,
+              "rot": 0,
+              "len": 12
+            },
+            {
+              "type": "tv_box",
+              "x": 42,
+              "z": 12
+            },
+            {
+              "type": "tv_box",
+              "x": 43,
+              "z": 12
+            },
+            {
+              "type": "tv_box",
+              "x": 42,
+              "z": 13
+            },
+            {
+              "type": "phone_stand",
+              "x": 50,
+              "z": 18
+            },
+            {
+              "type": "phone_stand",
+              "x": 54,
+              "z": 20
+            },
+            {
+              "type": "speaker",
+              "x": 47,
+              "z": 22
+            },
+            {
+              "type": "speaker",
+              "x": 58,
+              "z": 12
+            },
+            {
+              "type": "pc_tower",
+              "x": 56,
+              "z": 26
+            },
+            {
+              "type": "pc_tower",
+              "x": 57,
+              "z": 26
+            },
+            {
+              "type": "vending_machine",
+              "x": 61,
+              "z": 9,
+              "rot": -90
+            },
+            {
+              "type": "cable_reel",
+              "x": 60,
+              "z": 30
+            }
+          ],
+          "hidingSpots": [
+            {
+              "x": 42,
+              "z": 13,
+              "label": "ในกองกล่องทีวี",
+              "popular": true
+            }
+          ]
+        },
+        {
+          "id": "restroom_2",
+          "name": "ห้องน้ำ",
+          "palette": "restroom",
+          "rect": {
+            "x": 56,
+            "z": 32,
+            "w": 6,
+            "d": 6
+          },
+          "floorColor": "#cfd8dc",
+          "door": {
+            "x": 56,
+            "z": 35
+          },
+          "props": [
+            {
+              "type": "trash_bin",
+              "x": 57,
+              "z": 33
+            },
+            {
+              "type": "hand_dryer",
+              "x": 61,
+              "z": 37
+            }
+          ]
+        },
+        {
+          "id": "walkway_2",
+          "name": "ทางเดินรอบช่องโล่ง",
+          "palette": "atrium",
+          "rect": {
+            "x": 20,
+            "z": 4,
+            "w": 24,
+            "d": 36
+          },
+          "floorColor": "#cfc8bb",
+          "isCorridor": true,
+          "props": [
+            {
+              "type": "plant_pot",
+              "x": 22,
+              "z": 6
+            },
+            {
+              "type": "plant_pot",
+              "x": 42,
+              "z": 6
+            },
+            {
+              "type": "bench",
+              "x": 32,
+              "z": 4
+            },
+            {
+              "type": "banner_stand",
+              "x": 32,
+              "z": 36
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "voids": [
+        {
+          "x": 24,
+          "z": 8,
+          "w": 16,
+          "d": 14
+        }
+      ],
+      "zones": [
+        {
+          "id": "seeker_room",
+          "name": "จุดเกิดผู้ตามหา",
+          "palette": "storage",
+          "rect": {
+            "x": 2,
+            "z": 30,
+            "w": 8,
+            "d": 8
+          },
+          "floorColor": "#9e9e9e",
+          "door": {
+            "x": 10,
+            "z": 34
+          },
+          "props": [
+            {
+              "type": "ladder",
+              "x": 3,
+              "z": 31
+            },
+            {
+              "type": "pipe",
+              "x": 3,
+              "z": 37,
+              "len": 6
+            }
+          ]
+        },
+        {
+          "id": "shops_3",
+          "name": "ร้านเล็ก / ของฝาก",
+          "palette": "fashion",
+          "rect": {
+            "x": 2,
+            "z": 8,
+            "w": 20,
+            "d": 22
+          },
+          "floorColor": "#e6dccf",
+          "props": [
+            {
+              "type": "shelf_short",
+              "x": 6,
+              "z": 12
+            },
+            {
+              "type": "shelf_short",
+              "x": 6,
+              "z": 20,
+              "rot": 90
+            },
+            {
+              "type": "mannequin",
+              "x": 14,
+              "z": 10
+            },
+            {
+              "type": "clothes_rack",
+              "x": 16,
+              "z": 18,
+              "rot": 45
+            },
+            {
+              "type": "bench",
+              "x": 10,
+              "z": 26
+            },
+            {
+              "type": "plant_pot",
+              "x": 20,
+              "z": 27
+            },
+            {
+              "type": "sale_sign",
+              "x": 4,
+              "z": 28
+            }
+          ]
+        },
+        {
+          "id": "cinema",
+          "name": "โรงภาพยนตร์",
+          "palette": "cinema",
+          "rect": {
+            "x": 22,
+            "z": 24,
+            "w": 20,
+            "d": 14
+          },
+          "floorColor": "#8c2b2b",
+          "notes": "โถงหน้าโรง + ทางเข้าโรงมืด 2 ประตู",
+          "props": [
+            {
+              "type": "ticket_kiosk",
+              "x": 32,
+              "z": 27
+            },
+            {
+              "type": "popcorn_machine",
+              "x": 25,
+              "z": 27
+            },
+            {
+              "type": "poster_stand",
+              "x": 24,
+              "z": 34
+            },
+            {
+              "type": "poster_stand",
+              "x": 40,
+              "z": 34
+            },
+            {
+              "type": "velvet_rope",
+              "x": 30,
+              "z": 31
+            },
+            {
+              "type": "velvet_rope",
+              "x": 34,
+              "z": 31
+            },
+            {
+              "type": "cinema_seat",
+              "x": 26,
+              "z": 36
+            },
+            {
+              "type": "cinema_seat",
+              "x": 28,
+              "z": 36
+            },
+            {
+              "type": "trash_bin",
+              "x": 41,
+              "z": 26
+            }
+          ],
+          "hidingSpots": [
+            {
+              "x": 27,
+              "z": 36,
+              "label": "ในแถวเก้าอี้หน้าโรง"
+            }
+          ]
+        },
+        {
+          "id": "foodcourt",
+          "name": "โซนอาหาร",
+          "palette": "food",
+          "rect": {
+            "x": 42,
+            "z": 8,
+            "w": 20,
+            "d": 22
+          },
+          "floorColor": "#d7e2c2",
+          "notes": "โต๊ะยาว 2 ชุดวางไม่ขนาน + ซุ้มร้าน 3 ร้านติดผนังตะวันออก",
+          "props": [
+            {
+              "type": "long_table",
+              "x": 46,
+              "z": 14,
+              "rot": 15
+            },
+            {
+              "type": "long_table",
+              "x": 50,
+              "z": 24,
+              "rot": -10
+            },
+            {
+              "type": "chair",
+              "x": 45,
+              "z": 12
+            },
+            {
+              "type": "chair",
+              "x": 48,
+              "z": 13
+            },
+            {
+              "type": "chair",
+              "x": 51,
+              "z": 22
+            },
+            {
+              "type": "chair",
+              "x": 53,
+              "z": 25
+            },
+            {
+              "type": "stall",
+              "x": 60,
+              "z": 11,
+              "rot": -90
+            },
+            {
+              "type": "stall",
+              "x": 60,
+              "z": 18,
+              "rot": -90
+            },
+            {
+              "type": "stall",
+              "x": 60,
+              "z": 25,
+              "rot": -90
+            },
+            {
+              "type": "soda_fridge",
+              "x": 43,
+              "z": 28
+            },
+            {
+              "type": "food_tray",
+              "x": 47,
+              "z": 14
+            },
+            {
+              "type": "trash_bin",
+              "x": 55,
+              "z": 9
+            },
+            {
+              "type": "plant_pot",
+              "x": 43,
+              "z": 9
+            }
+          ],
+          "hidingSpots": [
+            {
+              "x": 59,
+              "z": 18,
+              "label": "หลังซุ้มร้านกลาง",
+              "popular": true
+            }
+          ]
+        },
+        {
+          "id": "rooftop",
+          "name": "ดาดฟ้า (ห้องเครื่อง)",
+          "palette": "rooftop",
+          "rect": {
+            "x": 42,
+            "z": 30,
+            "w": 20,
+            "d": 8
+          },
+          "floorColor": "#7d7d7d",
+          "door": {
+            "x": 42,
+            "z": 34
+          },
+          "outdoor": true,
+          "props": [
+            {
+              "type": "ac_unit",
+              "x": 46,
+              "z": 33
+            },
+            {
+              "type": "ac_unit",
+              "x": 50,
+              "z": 33
+            },
+            {
+              "type": "ac_unit",
+              "x": 54,
+              "z": 33
+            },
+            {
+              "type": "water_tank",
+              "x": 60,
+              "z": 36
+            },
+            {
+              "type": "pipe",
+              "x": 44,
+              "z": 37,
+              "len": 14
+            },
+            {
+              "type": "barrel",
+              "x": 58,
+              "z": 31
+            }
+          ],
+          "hidingSpots": [
+            {
+              "x": 52,
+              "z": 33,
+              "label": "ระหว่างแอร์ 2 ตัว",
+              "popular": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

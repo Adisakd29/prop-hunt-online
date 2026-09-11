@@ -1,0 +1,19 @@
+{
+  "name": "prop-hunt-mall",
+  "version": "1.0.0",
+  "description": "เกมซ่อนหาของ 3 มิติ ห้างสรรพสินค้า 20 โซน ของ 70 ชนิด มีบอท กาชา และระบบเพื่อน",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node test/game.test.js && node test/account.test.js && node test/props.test.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.23.0",
+    "socket.io": "^4.7.5"
+  }
+}

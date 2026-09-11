@@ -1,0 +1,1355 @@
+:root{
+  /* หน่วยกลางของ UI: อิงด้านที่ "คับ" ที่สุดของจอ
+     มือถือแนวนอนจอเตี้ย ค่านี้จะเล็กลงเอง ทุกอย่างจึงย่อตามพร้อมกัน */
+  --ui: min(1.3vw, 2.15vh);
+  --hider:#f0b429;
+  --seeker:#e0402f;
+  --gold:#f0b429;
+  --ink:#1e2530;
+  --muted:#66707d;
+  --card:rgba(255,255,255,.95);
+  --line:#e4e8ee;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#8fcdf2;color:var(--ink)}
+body{
+  font-family:'IBM Plex Sans Thai',system-ui,'Segoe UI',sans-serif;
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:none;
+}
+canvas#gl{position:fixed;inset:0;display:block;z-index:0}
+.hidden{display:none !important}
+.muted{color:var(--muted);font-size:12.5px;line-height:1.6}
+h4{font-size:13px;color:var(--muted);font-weight:600;margin:12px 0 6px}
+
+#flash{position:fixed;inset:0;z-index:8;pointer-events:none;background:var(--seeker);opacity:0;transition:opacity .1s linear}
+#toast{
+  position:fixed;z-index:80;left:50%;top:14px;transform:translateX(-50%);
+  background:rgba(30,37,48,.94);color:#fff;border-radius:999px;padding:10px 22px;
+  font-size:14px;font-weight:600;max-width:92vw;text-align:center;
+}
+
+#boot{
+  position:fixed;inset:0;z-index:90;display:grid;place-items:center;gap:14px;
+  background:linear-gradient(180deg,#8fcdf2,#cfe6b4);color:#2b3a49;
+}
+#boot p{font-weight:600;margin-top:12px}
+.spin{
+  width:44px;height:44px;border-radius:50%;
+  border:5px solid rgba(255,255,255,.55);border-top-color:#2f7fd4;
+  animation:sp .8s linear infinite;margin:0 auto;
+}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ================= ปุ่มพื้นฐาน ================= */
+button.primary{
+  width:100%;background:#3fb36a;color:#fff;border:0;border-bottom:4px solid #2f8a52;
+  border-radius:13px;padding:12px;font:inherit;font-weight:700;font-size:15px;cursor:pointer;
+}
+button.primary:active:not(:disabled){transform:translateY(2px);border-bottom-width:2px}
+button.primary:disabled{opacity:.5;cursor:not-allowed}
+button.ghost{
+  width:100%;background:transparent;border:0;color:var(--muted);
+  padding:10px;font:inherit;font-size:13.5px;cursor:pointer;margin-top:8px;
+}
+.mini{
+  background:#e9edf3;border:0;border-radius:9px;padding:7px 11px;
+  font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;margin-left:6px;color:var(--ink);
+}
+.mini.ok{background:#3fb36a;color:#fff}
+.mini:disabled{opacity:.6}
+input{
+  width:100%;background:#f1f3f6;border:2px solid #dfe4ea;color:var(--ink);
+  border-radius:13px;padding:11px 15px;font:inherit;font-size:15px;margin-bottom:10px;
+}
+input:focus{outline:none;border-color:var(--gold);background:#fff}
+
+/* ไอคอนสี่เหลี่ยม */
+.ico-shop,.ico-map,.ico-gear,.ico-swap{
+  width:20px;height:20px;border-radius:5px;display:inline-block;flex:none;
+}
+.hicon{width:clamp(24px, calc(var(--ui) * 2.6), 42px);height:clamp(24px, calc(var(--ui) * 2.6), 42px);display:block;flex:none;filter:drop-shadow(0 1px 2px rgba(20,40,60,.35))}
+.coin{width:clamp(22px, calc(var(--ui) * 2.3), 36px);height:clamp(22px, calc(var(--ui) * 2.3), 36px);display:block;flex:none;filter:drop-shadow(0 1px 1px rgba(120,80,0,.35))}
+.pill.big .coin{width:clamp(27px, calc(var(--ui) * 2.9), 46px);height:clamp(27px, calc(var(--ui) * 2.9), 46px)}
+.gacha .coin{width:20px;height:20px}
+.ico-box{background:#d0a568;box-shadow:inset 0 0 0 2px #a87c48}
+.ico-cop{background:#2f4f8f;border-radius:50%}
+.ico-shop{background:#e0574a}
+.ico-map{background:#3fb36a}
+.ico-gear{background:#8a939f}
+.ico-swap{background:#a87ad4}
+
+/* ================= เข้าสู่ระบบ ================= */
+.cover{
+  position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:20px;overflow:auto;
+  background:rgba(18,32,45,.42);backdrop-filter:blur(3px);
+}
+.card{
+  width:min(440px,100%);background:var(--card);border-radius:24px;
+  padding:24px 24px 20px;box-shadow:0 22px 56px rgba(20,40,60,.34);text-align:center;
+}
+.mark{margin-bottom:2px}
+h1{font-size:clamp(32px,7vw,46px);font-weight:700;letter-spacing:-.02em;line-height:1.05;margin-bottom:8px}
+.tag{color:var(--muted);line-height:1.7;font-size:13.5px;margin-bottom:18px}
+.tabs{display:flex;gap:8px;background:#eef1f5;border-radius:12px;padding:4px;margin-bottom:14px}
+.tabs button{
+  flex:1;border:0;background:transparent;border-radius:9px;padding:9px;
+  font:inherit;font-weight:600;font-size:14px;color:var(--muted);cursor:pointer;
+}
+.tabs button.on{background:#fff;color:var(--ink);box-shadow:0 2px 6px rgba(20,40,60,.12)}
+.msg{margin-top:10px;font-size:13px;min-height:18px;color:var(--muted)}
+.msg.bad{color:var(--seeker)}
+
+/* ================= ล็อบบี้ ================= */
+#lobby{position:fixed;inset:0;z-index:20;pointer-events:none}
+#lobby > *{pointer-events:auto}
+
+.lobtop{
+  position:absolute;top:0;left:0;right:0;display:flex;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;gap:6px;
+  padding:calc(8px + env(safe-area-inset-top, 0px)) clamp(6px,1.4vw,14px) 8px;
+  pointer-events:none;
+}
+.lobtop > *{pointer-events:auto}
+.lvpill{
+  display:flex;align-items:center;gap:8px;background:rgba(30,37,48,.72);color:#fff;
+  border-radius:999px;padding:7px 16px;max-width:44vw;overflow:hidden;
+}
+.lvpill b{font-size:14px;color:var(--gold);flex:none}
+.lvpill span{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.livebar{display:flex;align-items:center;gap:clamp(4px,0.8vw,9px);flex:1 1 auto;min-width:0;justify-content:center}
+.lobright{display:flex;align-items:center;gap:clamp(4px,0.8vw,9px);flex:0 0 auto}
+
+.pill{
+  display:flex;align-items:center;gap:calc(var(--ui) * 0.5);background:#fff;
+  border-radius:999px;flex:0 0 auto;font-weight:700;
+  padding:calc(var(--ui) * 0.4) calc(var(--ui) * 1.3) calc(var(--ui) * 0.4) calc(var(--ui) * 0.5);
+  font-size:clamp(15px, calc(var(--ui) * 1.7), 26px);
+  border-bottom:clamp(3px, calc(var(--ui) * 0.32), 5px) solid #cfd6df;
+  box-shadow:0 4px 12px rgba(20,40,60,.18);
+}
+.pill.small{font-size:15px;padding:5px 12px 5px 7px}
+.count.hiders{color:#a87c48}
+.count.seekers{color:#2f4f8f}
+.pill.gold{color:#a97c08}
+.clock{
+  background:linear-gradient(180deg,#4d97e0,#2f7fd4);color:#fff;border-radius:999px;
+  text-align:center;flex:0 0 auto;
+  padding:calc(var(--ui) * 0.4) clamp(10px, calc(var(--ui) * 1.7), 28px);
+  border-bottom:clamp(3px, calc(var(--ui) * 0.32), 5px) solid #245f9f;
+  min-width:clamp(96px, calc(var(--ui) * 11), 172px);
+  box-shadow:0 5px 14px rgba(20,60,110,.3), inset 0 2px 0 rgba(255,255,255,.28);
+}
+.clock span{display:block;font-size:clamp(19px, calc(var(--ui) * 2.1), 32px);font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.clock em{font-style:normal;font-size:clamp(11px, calc(var(--ui) * 1.05), 16px);opacity:.9;white-space:nowrap;font-weight:600}
+
+/* แผงเนื้อหาลอยกลางจอ */
+.paneldock{
+  position:absolute;left:12px;top:64px;bottom:104px;width:min(430px,54vw);
+  display:flex;pointer-events:none;
+}
+.dpanel{
+  pointer-events:auto;width:100%;background:var(--card);border-radius:20px;
+  padding:16px 16px 18px;box-shadow:0 18px 44px rgba(20,40,60,.3);
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+}
+.pclose{
+  position:absolute;right:-10px;top:-10px;z-index:2;width:34px;height:34px;border-radius:50%;
+  border:0;background:#fff;color:var(--ink);font-size:15px;cursor:pointer;
+  box-shadow:0 4px 12px rgba(20,40,60,.25);display:none;
+}
+.paneldock:has(.dpanel:not(.hidden)) .pclose{display:block}
+.dpanel .head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.dpanel h2{font-size:19px}
+.cnt2{font-size:12.5px;color:var(--muted)}
+.cnt2 b{color:var(--ink)}
+
+/* การ์ดของและสกิน */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:9px;margin-top:12px}
+.card2{
+  position:relative;background:#f4f6f9;border-radius:14px;padding:8px;text-align:center;
+  border-top:5px solid #cdd5df;display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.card2.t1{border-top-color:#6aa8d8}
+.card2.t2{border-top-color:#a87ad4}
+.card2.t3{border-top-color:#f0b429}
+.card2.sel{outline:2px solid #3fb36a;background:#eefaf1}
+.card2 .idx{
+  position:absolute;left:6px;top:6px;width:19px;height:19px;border-radius:6px;
+  background:rgba(30,37,48,.12);color:var(--muted);font-size:11px;font-weight:700;
+  display:grid;place-items:center;
+}
+.card2 .pic{position:relative;width:76px;height:76px;display:grid;place-items:center}
+.card2 .pic img{width:100%;height:100%;object-fit:contain;display:block}
+.card2 .noimg{width:56px;height:56px;border-radius:12px;background:#dfe4ea}
+.card2.locked .pic img{filter:brightness(0) saturate(0);opacity:.34}
+.card2.locked .q{
+  position:absolute;inset:0;display:grid;place-items:center;
+  font-size:34px;font-weight:700;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.35);
+}
+.card2.locked b{color:var(--muted)}
+.card2 b{font-size:12.5px;line-height:1.3}
+.card2 em{font-style:normal;font-size:10.5px;color:var(--muted)}
+.card2 .mini{margin:4px 0 0;width:100%}
+
+/* ปุ่มกาชา */
+.gbtns{display:flex;gap:10px;margin:14px 0}
+.gacha{
+  flex:1;border:0;border-radius:16px;padding:14px 10px;cursor:pointer;color:#fff;
+  font:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;
+  border-bottom:5px solid rgba(0,0,0,.22);
+}
+.gacha.prop{background:#f0b429;color:#4a3200;border-bottom-color:#c99109}
+.gacha.skin{background:#a87ad4;border-bottom-color:#7d54a8}
+.gacha:active:not(:disabled){transform:translateY(3px);border-bottom-width:2px}
+.gacha:disabled{opacity:.55}
+.gacha b{font-size:15px}
+.gacha em{font-style:normal;display:flex;align-items:center;gap:5px;font-size:14px;font-weight:700}
+
+/* ผลการสุ่ม */
+.gachabox{
+  position:fixed;inset:0;z-index:70;display:grid;place-items:center;padding:20px;
+  background:rgba(18,26,38,.6);
+}
+.gcard{
+  width:min(320px,90vw);background:#fff;border-radius:22px;padding:20px;text-align:center;
+  border-top:7px solid #cdd5df;box-shadow:0 22px 56px rgba(0,0,0,.4);
+}
+.gcard.t1{border-top-color:#6aa8d8}
+.gcard.t2{border-top-color:#a87ad4}
+.gcard.t3{border-top-color:#f0b429}
+.gcard img{width:150px;height:150px;object-fit:contain;display:block;margin:0 auto 8px}
+.gcard.reveal img{animation:pop .35s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.5);opacity:0}}
+.gcard b{font-size:20px;display:block}
+.gcard em{font-style:normal;font-size:12.5px;color:var(--muted);display:block;margin-bottom:6px}
+.gcard p{font-size:13.5px;color:var(--muted);min-height:20px;margin-bottom:14px}
+
+.flist{margin:8px 0 10px}
+.frow{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:9px 2px;border-bottom:1px solid var(--line);font-size:14px;
+}
+.frow em{font-style:normal;font-size:11.5px;color:var(--muted);display:block}
+.frow .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#c3cad4;margin-right:7px}
+.frow .dot.on{background:#3fb36a}
+.frow .cnt{font-variant-numeric:tabular-nums;margin-right:6px;color:var(--muted);font-size:13px}
+.addrow{display:flex;gap:8px;align-items:flex-start}
+.addrow input{margin-bottom:0}
+.addrow button{width:auto;white-space:nowrap;padding:11px 16px}
+
+/* ================= HUD ในเกม ================= */
+#hud{position:fixed;inset:0;z-index:10;pointer-events:none;filter:drop-shadow(0 3px 8px rgba(20,40,60,.22))}
+.topbar{position:absolute;top:10px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:9px}
+.topbar #timer{display:block;font-size:25px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.05}
+.topbar.urgent .clock{background:var(--seeker);border-bottom-color:#a82d20}
+
+.topright{position:absolute;right:12px;top:12px;display:flex;align-items:center;gap:8px}
+.quit{
+  pointer-events:auto;background:rgba(255,255,255,.94);border:0;border-radius:999px;
+  border-bottom:clamp(3px, calc(var(--ui) * 0.32), 5px) solid #cfd6df;
+  padding:calc(var(--ui) * 0.4) calc(var(--ui) * 1.2);
+  height:clamp(34px, calc(var(--ui) * 3.7), 54px);
+  font:inherit;font-weight:700;font-size:clamp(14px, calc(var(--ui) * 1.6), 24px);
+  color:var(--seeker);cursor:pointer;
+  box-shadow:0 4px 12px rgba(20,40,60,.18);
+}
+.roomtag{background:rgba(255,255,255,.9);border-radius:999px;padding:4px 10px;font-size:11px;font-weight:600}
+.fps{background:rgba(30,37,48,.55);color:#fff;border-radius:999px;padding:5px 10px;font-size:11px;font-variant-numeric:tabular-nums}
+
+.role{
+  position:absolute;left:12px;top:12px;background:var(--card);
+  border-radius:16px;padding:10px 15px;max-width:270px;border-left:5px solid var(--hider);
+}
+.role strong{display:block;font-size:17px;color:#c98f0f;margin-bottom:1px}
+.role .propname{display:block;font-size:14px;color:#2f7fd4;margin-bottom:2px}
+.role span{font-size:12px;color:var(--muted);line-height:1.45;display:block}
+.role.seek{border-left-color:var(--seeker)}
+.role.seek strong{color:var(--seeker)}
+.score{margin-top:6px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:5px}
+.score span{color:var(--ink);font-weight:700;font-size:16px;font-variant-numeric:tabular-nums}
+
+.chatpanel{
+  position:absolute;right:12px;top:calc(clamp(44px, calc(var(--ui) * 6), 68px) + env(safe-area-inset-top, 0px));
+  width:clamp(160px, calc(var(--ui) * 17), 250px);
+  display:flex;flex-direction:column;gap:6px;pointer-events:none;
+}
+#feed{
+  list-style:none;display:flex;flex-direction:column;gap:4px;text-align:right;
+  max-height:34vh;overflow:hidden;
+}
+.chatrow{
+  display:flex;gap:6px;pointer-events:auto;
+  background:rgba(20,28,40,.55);border-radius:999px;padding:4px;backdrop-filter:blur(4px);
+}
+.chatrow input{
+  flex:1;min-width:0;margin:0;background:rgba(255,255,255,.94);border:0;
+  border-radius:999px;padding:6px 11px;font-size:11.5px;
+}
+.chatrow button{
+  border:0;border-radius:999px;background:#2f7fd4;color:#fff;
+  padding:0 11px;font:inherit;font-weight:700;font-size:11.5px;cursor:pointer;
+}
+#feed li{font-size:clamp(11px, calc(var(--ui) * 1.05), 15px);color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.6);animation:fin .22s ease-out;line-height:1.4}
+#feed b{color:#ffb3ab}
+#feed i{font-style:normal;color:#ffe08a}
+#feed u{text-decoration:none;color:#9fe0ff;font-weight:700}
+#feed em{font-style:normal;opacity:.75;font-size:12px}
+@keyframes fin{from{opacity:0;transform:translateY(-5px)}}
+
+.board{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:var(--card);border-radius:18px;padding:18px 22px;min-width:290px;
+}
+.board h3{font-size:12.5px;color:var(--muted);font-weight:500;margin-bottom:9px}
+.board .row{display:flex;justify-content:space-between;gap:24px;padding:5px 0;font-size:14.5px}
+.board .row + .row{border-top:1px solid var(--line)}
+.board .row s{text-decoration:none;font-variant-numeric:tabular-nums;font-weight:700}
+.board .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:middle}
+
+.chatbox{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);width:min(420px,86vw);pointer-events:auto}
+.chatbox input{margin:0;background:rgba(255,255,255,.95);border:0;border-radius:999px;padding:12px 20px}
+
+.panel{
+  position:fixed;z-index:30;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:#fff;border-radius:22px;padding:24px 30px;min-width:min(360px,90vw);
+  text-align:center;box-shadow:0 26px 60px rgba(20,40,60,.35);
+}
+.panel h2{font-size:24px;margin-bottom:5px}
+.panel p{color:var(--muted);font-size:14px;margin-bottom:14px}
+.panel ol{list-style:none;text-align:left;margin-bottom:14px}
+.panel ol li{display:flex;justify-content:space-between;gap:20px;padding:5px 0;font-size:14.5px}
+.panel ol li + li{border-top:1px solid var(--line)}
+.panel .gold{color:#a97c08;font-weight:700}
+.panel .wait{font-size:12.5px;color:#8a939f}
+
+/* ปุ่มมือถือในเกม */
+#touch{position:absolute;inset:0;pointer-events:none}
+#stick{
+  position:absolute;left:24px;bottom:calc(24px + env(safe-area-inset-bottom, 0px));
+  width:clamp(124px, calc(var(--ui) * 13), 200px);height:clamp(124px, calc(var(--ui) * 13), 200px);
+  border-radius:50%;pointer-events:auto;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255,255,255,.18), rgba(38,48,64,.5)),
+    conic-gradient(from 45deg, rgba(255,255,255,.1), rgba(255,255,255,.02), rgba(255,255,255,.1));
+  border:4px solid rgba(255,255,255,.8);
+  box-shadow:inset 0 6px 16px rgba(0,0,0,.35), 0 8px 20px rgba(20,40,60,.3);
+}
+/* ลูกศรสี่ทิศ รูปร่างเหมือนกันหมด ทำจากรูปพื้นหลังชิ้นเดียว */
+#stick::before{
+  content:'';position:absolute;inset:11%;pointer-events:none;opacity:.9;
+  background:
+    /* บน */    linear-gradient(180deg, rgba(255,255,255,.92) 0 100%) center top/16px 16px no-repeat,
+    /* ล่าง */  linear-gradient(180deg, rgba(255,255,255,.92) 0 100%) center bottom/16px 16px no-repeat,
+    /* ซ้าย */  linear-gradient(180deg, rgba(255,255,255,.92) 0 100%) left center/16px 16px no-repeat,
+    /* ขวา */   linear-gradient(180deg, rgba(255,255,255,.92) 0 100%) right center/16px 16px no-repeat;
+  -webkit-mask:
+    conic-gradient(from -45deg at 50% 0, #000 0 90deg, transparent 0) center top/16px 16px no-repeat,
+    conic-gradient(from 135deg at 50% 100%, #000 0 90deg, transparent 0) center bottom/16px 16px no-repeat,
+    conic-gradient(from 45deg at 0 50%, #000 0 90deg, transparent 0) left center/16px 16px no-repeat,
+    conic-gradient(from -135deg at 100% 50%, #000 0 90deg, transparent 0) right center/16px 16px no-repeat;
+  mask:
+    conic-gradient(from -45deg at 50% 0, #000 0 90deg, transparent 0) center top/16px 16px no-repeat,
+    conic-gradient(from 135deg at 50% 100%, #000 0 90deg, transparent 0) center bottom/16px 16px no-repeat,
+    conic-gradient(from 45deg at 0 50%, #000 0 90deg, transparent 0) left center/16px 16px no-repeat,
+    conic-gradient(from -135deg at 100% 50%, #000 0 90deg, transparent 0) right center/16px 16px no-repeat;
+}
+#knob{
+  position:absolute;left:50%;top:50%;
+  width:clamp(56px, calc(var(--ui) * 5.8), 90px);height:clamp(56px, calc(var(--ui) * 5.8), 90px);
+  margin:0;transform-origin:center;translate:-50% -50%;border-radius:50%;
+  background:radial-gradient(circle at 34% 30%,#ff8a7a 0%,#e0402f 55%,#a82d20 100%);
+  border:3px solid rgba(255,255,255,.85);
+}
+.btns{position:absolute;right:20px;bottom:34px;display:flex;align-items:flex-end;gap:11px}
+.btns button{
+  pointer-events:auto;border:0;border-radius:50%;font:inherit;font-weight:700;color:#fff;
+  border-bottom:5px solid rgba(0,0,0,.22);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;line-height:1.15;
+}
+.btns button:active{transform:translateY(3px);border-bottom-width:2px}
+.btns button small{font-size:10.5px;font-weight:600;opacity:.9}
+#btnMain{width:104px;height:104px;font-size:19px;background:#f0b429}
+#btnMain.seek{background:var(--seeker)}
+#btnRoll{width:84px;height:84px;font-size:12.5px;background:#2f7fd4}
+#btnChat{width:54px;height:54px;font-size:21px;background:rgba(255,255,255,.9)}
+.btns button:disabled{opacity:.4}
+
+/* ================= จอเล็ก ================= */
+@media (max-width:820px){
+  .paneldock{width:min(360px,62vw);top:58px;bottom:96px}
+  .cards{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
+  .card2 .pic{width:62px;height:62px}
+  .side button{width:66px;font-size:9.5px}
+  .joinbtn{font-size:16px;padding:14px}
+  .clock{min-width:100px;padding:5px 14px}
+  .clock span{font-size:19px}
+  .pill{font-size:15px;padding:5px 12px 5px 7px}
+  .lvpill{max-width:34vw}
+  .role{max-width:168px;padding:8px 11px;top:62px;left:10px}
+  .role strong{font-size:14px}
+  .role .propname{font-size:12.5px}
+  .role span{font-size:10.5px}
+  #feed{width:44vw;top:110px;right:10px}
+  #feed li{font-size:11.5px}
+  .topbar #timer{font-size:20px}
+  .chatbox{bottom:150px;width:78vw;left:auto;right:10px;transform:none}
+  .roomtag,.fps{display:none}
+}
+@media (max-width:560px){
+  .paneldock{width:calc(100% - 24px);top:56px;bottom:92px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none !important}}
+
+
+/* ---- ปุ่มเพลง ---- */
+.musicbtn{
+  pointer-events:auto;
+  background:rgba(255,255,255,.94);border:0;border-radius:999px;
+  border-bottom:clamp(3px, calc(var(--ui) * 0.32), 5px) solid #cfd6df;
+  padding:calc(var(--ui) * 0.4) calc(var(--ui) * 1);
+  min-width:clamp(40px, calc(var(--ui) * 4.4), 62px);
+  height:clamp(34px, calc(var(--ui) * 3.7), 54px);
+  font-size:clamp(15px, calc(var(--ui) * 1.7), 24px);
+  color:var(--ink);cursor:pointer;line-height:1;flex:none;
+  box-shadow:0 4px 12px rgba(20,40,60,.18);
+}
+.musicbtn.off{background:rgba(140,150,165,.75);color:#fff}
+
+/* ---- หัวใจของคนหา ---- */
+.hearts{display:flex;position:static}
+.hearts{gap:clamp(2px,0.5vw,6px)}
+.heart{
+  width:clamp(34px, calc(var(--ui) * 3.7), 64px);height:clamp(34px, calc(var(--ui) * 3.7), 64px);display:block;
+  filter:drop-shadow(0 3px 5px rgba(140,20,40,.45));
+  animation:hbeat 2.4s ease-in-out infinite;
+}
+.heart:nth-child(2){animation-delay:.15s}
+.heart:nth-child(3){animation-delay:.3s}
+.heart:nth-child(4){animation-delay:.45s}
+.heart:nth-child(5){animation-delay:.6s}
+.heart.gone{filter:grayscale(1) brightness(.55);opacity:.5;animation:none;transform:scale(.86)}
+@keyframes hbeat{0%,88%,100%{transform:scale(1)}92%{transform:scale(1.12)}96%{transform:scale(1)}}
+
+/* ---- กล่องรอรอบถัดไป ---- */
+.waitbox{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:rgba(30,37,48,.92);color:#fff;border-radius:18px;
+  padding:16px 26px;font-size:15px;font-weight:700;text-align:center;
+}
+
+/* ---- ปุ่มดูรายชื่อผู้เล่น ---- */
+.rosterbtn{
+  position:absolute;right:12px;bottom:calc(clamp(150px, calc(var(--ui) * 20), 240px) + env(safe-area-inset-bottom, 0px));
+  width:clamp(48px, calc(var(--ui) * 5), 62px);height:clamp(48px, calc(var(--ui) * 5), 62px);
+  border-radius:26%;border:0;pointer-events:auto;
+  background:rgba(255,255,255,.94);color:#2f4f8f;cursor:pointer;
+  border-bottom:5px solid rgba(0,0,0,.22);box-shadow:0 6px 16px rgba(20,40,60,.25);
+  display:grid;place-items:center;
+}
+.rosterbtn svg{width:62%;height:62%}
+.rosterbtn:active{transform:translateY(3px);border-bottom-width:2px}
+#roster{
+  left:auto;right:12px;top:calc(clamp(44px, calc(var(--ui) * 6), 68px) + env(safe-area-inset-top, 0px));
+  bottom:calc(clamp(90px, calc(var(--ui) * 12), 150px) + env(safe-area-inset-bottom, 0px));
+  transform:none;max-height:none;overflow-y:auto;overscroll-behavior:contain;
+  width:clamp(190px, calc(var(--ui) * 24), 320px);min-width:0;
+  padding:calc(var(--ui) * 1) calc(var(--ui) * 1.2);
+  background:rgba(18,26,38,.62);backdrop-filter:blur(7px);
+  border:1px solid rgba(255,255,255,.18);color:#fff;pointer-events:auto;
+}
+#roster h3{color:rgba(255,255,255,.78);margin-bottom:6px}
+#roster .row{border-top-color:rgba(255,255,255,.14)}
+#roster .row s{color:rgba(255,255,255,.8)}
+#roster .row:first-of-type{border-top:0}
+#roster h3{font-size:clamp(10px, calc(var(--ui) * 1.15), 14px)}
+#roster .row{
+  font-size:clamp(11px, calc(var(--ui) * 1.2), 15px);gap:8px;padding:5px 0;
+  display:flex;align-items:center;justify-content:space-between;
+}
+#roster .row > span{display:flex;align-items:center;gap:7px;min-width:0}
+#roster .row .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#roster .dot.hide{background:var(--hider)}
+#roster .dot.seek{background:var(--seeker)}
+#roster .dot.gone{background:#9aa2ae}
+#roster em{font-style:normal;font-size:10.5px;color:var(--muted);margin-left:6px;
+  background:#eef1f5;border-radius:6px;padding:1px 6px}
+
+/* ---- กล่องเกิดใหม่ ---- */
+.revive{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:var(--card);border-radius:20px;padding:20px 24px;text-align:center;
+  width:min(330px,88vw);pointer-events:auto;box-shadow:0 22px 56px rgba(20,40,60,.4);
+  border-top:6px solid var(--seeker);
+}
+.revive b{font-size:20px;display:block;color:var(--seeker);margin-bottom:6px}
+.revive p{font-size:13.5px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.revive em{font-style:normal;display:block;font-size:12px;color:var(--muted);margin-top:8px}
+
+/* ---- ปุ่มกระโดด ---- */
+#btnJump{width:84px;height:84px;font-size:13.5px;background:#3fb36a}
+#btnMain{width:104px;height:104px;font-size:18px;background:var(--seeker)}
+#btnMain.hidden{display:none}
+
+/* ---- โลโก้ในหน้าเข้าสู่ระบบ ---- */
+.mark img{border-radius:24px;box-shadow:0 10px 26px rgba(20,40,60,.3);display:block;margin:0 auto 6px}
+
+@media (max-width:820px){
+  #btnJump{width:72px;height:72px;font-size:12px}
+  #btnMain{width:92px;height:92px;font-size:16px}
+  .missbar{top:66px;font-size:12px;padding:5px 14px}
+}
+
+
+/* ================= แถบบนล็อบบี้ ================= */
+.lvcard{
+  display:flex;align-items:center;gap:8px;background:rgba(30,37,48,.82);
+  border-radius:999px;padding:4px clamp(9px,1.3vw,16px) 4px 4px;
+  flex:0 1 auto;min-width:0;
+}
+.lvstar{
+  width:clamp(40px,5vw,56px);height:clamp(40px,5vw,56px);flex:none;border-radius:15px;display:grid;place-items:center;
+  background:radial-gradient(circle at 34% 30%,#ffe08a,#f0b429 62%,#c99109);
+  color:#4a3200;font-weight:700;font-size:16px;
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,.18);
+}
+.lvinfo{min-width:clamp(110px,15vw,190px);flex:1 1 auto}
+.lvinfo > b{display:block;color:#fff;font-size:clamp(15px,1.9vw,21px);line-height:1.15}
+.xpbar{
+  position:relative;height:clamp(16px,2.1vw,22px);border-radius:999px;
+  background:rgba(255,255,255,.22);overflow:hidden;margin-top:3px;
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.3);
+}
+.xpbar i{
+  position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:999px;
+  background:linear-gradient(90deg,#5fd4ff,#2f7fd4);transition:width .4s ease;
+}
+.xpbar span{
+  position:absolute;inset:0;display:grid;place-items:center;
+  font-size:clamp(10px,1.3vw,13px);font-weight:700;color:#fff;
+  text-shadow:0 1px 2px rgba(0,0,0,.6);
+}
+.pill.big{font-size:clamp(17px, calc(var(--ui) * 2), 30px)}
+.exitbtn{
+  background:rgba(255,255,255,.9);border:0;border-bottom:4px solid #cfd6df;border-radius:12px;
+  width:clamp(30px,3.6vw,42px);height:clamp(28px,3.4vw,38px);
+  font-size:clamp(13px,1.7vw,18px);color:var(--ink);cursor:pointer;line-height:1;flex:none;
+}
+.whoami{
+  position:absolute;left:12px;top:calc(56px + env(safe-area-inset-top, 0px));background:rgba(30,37,48,.6);color:#fff;
+  border-radius:999px;padding:4px 14px;font-size:12px;max-width:40vw;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+
+/* การ์ดโหมดด้านขวา */
+.askcard{
+  width:min(320px,90vw);background:#fff;border-radius:22px;padding:22px;text-align:center;
+  box-shadow:0 22px 56px rgba(0,0,0,.4);
+}
+.askcard b{font-size:19px;display:block;margin-bottom:4px}
+.askcard p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.askcard input{text-align:center;font-size:22px;font-weight:700;letter-spacing:2px}
+.askrow{display:flex;gap:8px;align-items:center}
+.askrow .ghost{width:auto;margin:0;padding:12px 14px;white-space:nowrap}
+.quick{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px}
+.quick button{
+  background:#eef1f5;border:0;border-radius:10px;padding:7px 12px;
+  font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;color:var(--ink);
+}
+.quick button.full{opacity:.45}
+
+.stagecard{
+  position:absolute;right:14px;bottom:118px;display:flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,#8b5cf6,#6b3fd0);color:#fff;border:0;
+  border-bottom:5px solid #542fa8;border-radius:18px;padding:9px 14px 9px 9px;cursor:pointer;
+  font:inherit;text-align:left;box-shadow:0 10px 26px rgba(40,20,90,.35);
+}
+.stagecard:active{transform:translateY(3px);border-bottom-width:2px}
+.stagecard .thumb{
+  width:46px;height:46px;border-radius:12px;flex:none;
+  background:linear-gradient(160deg,#8fcdf2 40%,#cfe6b4 40%,#9ccf78);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.5);
+}
+.stagecard em{font-style:normal;display:block;font-size:10.5px;opacity:.85}
+.stagecard b{display:block;font-size:15px}
+.stagecard .arrow{font-size:22px;opacity:.85;margin-left:2px}
+
+/* ================= แถบล่างล็อบบี้ ================= */
+.lobbottom{
+  position:absolute;left:0;right:0;bottom:0;display:flex;align-items:flex-end;
+  justify-content:center;flex-wrap:wrap;
+  gap:clamp(5px,1vw,12px);
+  padding:10px clamp(6px,1.4vw,16px) calc(14px + env(safe-area-inset-bottom, 0px));
+}
+/* ทุกปุ่มยืดหดตามความกว้างจอ ไม่มีค่าตายตัว จึงไม่มีทางล้นออกนอกจอ */
+.side{display:flex;gap:clamp(4px,0.8vw,10px);flex:1 1 0;min-width:0;justify-content:center}
+.tabbtn{
+  flex:1 1 0;min-width:0;max-width:150px;width:auto;
+  border:0;border-radius:clamp(13px,1.6vw,22px);
+  padding:clamp(8px,1.3vw,15px) 2px clamp(7px,1.1vw,13px);cursor:pointer;
+  font:inherit;font-size:clamp(10px,1.25vw,15px);font-weight:700;color:#fff;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  border-bottom:clamp(4px,0.6vw,7px) solid rgba(0,0,0,.24);
+  box-shadow:0 6px 16px rgba(20,40,60,.22);
+}
+.tabbtn svg{width:clamp(26px,3.6vw,46px);height:clamp(26px,3.6vw,46px);display:block}
+.tabbtn span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tabbtn:active{transform:translateY(3px);border-bottom-width:2px}
+.tabbtn.on{outline:3px solid #fff;outline-offset:-3px}
+.c-blue{background:#3f9fe8}
+.c-green{background:#3fb894}
+.c-orange{background:#f0a02c}
+.c-cyan{background:#3fa8e0}
+.c-pink{background:#e8467a}
+.c-gray{background:#7a8494}
+
+.joinbtn{
+  flex:0 1 clamp(180px,31vw,430px);min-width:0;
+  background:linear-gradient(180deg,#a06bff,#7b3fe4);
+  color:#fff;border:0;border-bottom:clamp(5px,0.8vw,8px) solid #5a2bb0;
+  border-radius:clamp(16px,2vw,26px);
+  padding:clamp(11px,1.5vw,18px) clamp(10px,2vw,30px);
+  font:inherit;font-weight:700;font-size:clamp(16px,2.3vw,28px);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:clamp(6px,1vw,12px);
+  box-shadow:0 10px 26px rgba(60,20,120,.32);white-space:nowrap;
+}
+.jicon{display:block;flex:none;width:clamp(28px,3.6vw,48px);height:clamp(28px,3.6vw,48px)}
+.jicon svg{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+.joinbtn:active{transform:translateY(3px);border-bottom-width:3px}
+
+@media (max-width:820px){
+  .tabbtn{font-size:clamp(9px,1.3vw,11px)}
+  .tabbtn svg{width:21px;height:21px}
+  .joinbtn{font-size:16px;padding:12px 16px;min-width:150px;border-radius:18px}
+  .joinbtn svg{width:20px;height:20px}
+  .lvinfo{min-width:96px}
+  .lvinfo > b{font-size:12px}
+  .lvstar{width:32px;height:32px;font-size:14px}
+  .pill.big{font-size:16px}
+  .askcard{
+  width:min(320px,90vw);background:#fff;border-radius:22px;padding:22px;text-align:center;
+  box-shadow:0 22px 56px rgba(0,0,0,.4);
+}
+.askcard b{font-size:19px;display:block;margin-bottom:4px}
+.askcard p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.askcard input{text-align:center;font-size:22px;font-weight:700;letter-spacing:2px}
+.askrow{display:flex;gap:8px;align-items:center}
+.askrow .ghost{width:auto;margin:0;padding:12px 14px;white-space:nowrap}
+.quick{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px}
+.quick button{
+  background:#eef1f5;border:0;border-radius:10px;padding:7px 12px;
+  font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;color:var(--ink);
+}
+.quick button.full{opacity:.45}
+
+.stagecard{bottom:104px;right:10px;padding:7px 11px 7px 7px}
+  .stagecard b{font-size:13px}
+  .stagecard .thumb{width:36px;height:36px}
+  .whoami{top:56px;left:10px;font-size:11px}
+  .paneldock{bottom:118px}
+}
+
+
+/* ---- ปุ่มซูม ---- */
+
+/* ---- ปุ่มล็อกท่า ---- */
+/* ปุ่มล็อกท่า อยู่ขวามือของจอยเดิน กดได้ทั้งบนคอมและมือถือ */
+#btnLock{
+  position:absolute;pointer-events:auto;display:grid;place-items:center;
+  left:calc(24px + clamp(124px, calc(var(--ui) * 13), 200px) + 16px);
+  bottom:calc(34px + env(safe-area-inset-bottom, 0px));
+  width:clamp(58px, calc(var(--ui) * 6.4), 92px);height:clamp(58px, calc(var(--ui) * 6.4), 92px);
+  border:0;border-radius:26%;cursor:pointer;color:#8a939f;background:transparent;
+  filter:drop-shadow(0 4px 8px rgba(20,40,60,.4));opacity:.75;
+}
+#btnLock .fb{width:72%;height:72%}
+body.has3d #btnLock .ico3d{width:88%;height:88%}
+/* ถ้ามีไฟล์ ui/lock.png (สองช่อง: ล็อก / ปลดล็อก) จะใช้รูปนั้นแทน */
+.lockimg{display:none;width:100%;height:100%;background-size:200% 100%;background-repeat:no-repeat}
+body.hasLock .lockimg{display:block;background-image:url('ui/lock.png');background-position:100% 0}
+body.hasLock #btnLock.on .lockimg{background-position:0 0}
+body.hasLock #btnLock .fb,body.hasLock #btnLock .ico3d{display:none}
+body.hasLock #btnLock{opacity:1;filter:drop-shadow(0 4px 8px rgba(20,40,60,.45))}
+#btnLock.on{color:#f0b429;opacity:1;transform:scale(1.06)}
+#btnLock:active{transform:translateY(3px) scale(.96)}
+
+/* ---- คำใบ้วิธีใช้จอย ---- */
+.stickhint{
+  position:absolute;left:14px;
+  bottom:calc(clamp(150px, calc(var(--ui) * 20), 248px) + env(safe-area-inset-bottom, 0px));
+  background:rgba(30,37,48,.62);color:#fff;border-radius:999px;
+  padding:4px 11px;font-size:clamp(9px, calc(var(--ui) * 1), 12px);white-space:nowrap;
+  animation:fadeout 1s ease 6s forwards;
+}
+@keyframes fadeout{to{opacity:0;visibility:hidden}}
+
+/* ---- แถบบอกว่าเป็นผู้ชม ---- */
+.spect{
+  position:absolute;left:50%;bottom:calc(16px + env(safe-area-inset-bottom, 0px));
+  transform:translateX(-50%);
+  background:rgba(30,37,48,.9);color:#fff;border-radius:999px;
+  padding:calc(var(--ui) * 0.7) calc(var(--ui) * 1.8);
+  font-size:clamp(10px, calc(var(--ui) * 1.25), 15px);font-weight:700;white-space:nowrap;
+}
+
+/* ---- ปุ่มในเกมให้ดูนูนขึ้น ---- */
+.btns button{
+  box-shadow:0 8px 18px rgba(20,40,60,.3), inset 0 3px 0 rgba(255,255,255,.28);
+}
+/* ปุ่มแอ็กชันทรงหกเหลี่ยมมน ดูเป็นปุ่มเกมมากกว่าวงกลมเปล่า ๆ */
+.btns button{
+  border-radius:30% !important;
+  position:relative;overflow:hidden;
+}
+.btns button::after{
+  content:'';position:absolute;left:12%;top:8%;width:76%;height:34%;
+  border-radius:50%;background:rgba(255,255,255,.32);pointer-events:none;
+}
+/* ปุ่มกระโดด: ลูกศรกับตัวหนังสือล้วน ไม่มีกรอบพื้นหลัง */
+#btnJump{
+  width:clamp(96px,12vw,132px);height:clamp(96px,12vw,132px);
+  background:none !important;border-bottom:0 !important;box-shadow:none !important;
+  border-radius:0 !important;color:#3fb36a;
+  font-size:clamp(13px,1.7vw,18px);gap:2px;
+  filter:drop-shadow(0 4px 8px rgba(20,60,40,.45));
+}
+#btnJump::after{display:none}
+#btnJump .fb{width:58%;height:58%}
+#btnJump span{
+  color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.55), 0 0 2px rgba(20,80,50,.9);
+}
+#btnJump:active{transform:translateY(4px) scale(.94)}
+#btnMain{
+  background:none !important;border-bottom:0 !important;box-shadow:none !important;
+  border-radius:0 !important;color:#e0402f;
+  filter:drop-shadow(0 4px 8px rgba(90,20,10,.5));
+}
+#btnMain::after{display:none}
+#btnMain span{color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.6), 0 0 2px rgba(120,20,10,.9)}
+#btnMain .ico3d.big{width:clamp(62px, calc(var(--ui) * 6.8), 112px);height:clamp(62px, calc(var(--ui) * 6.8), 112px)}
+#btnRoll{
+  width:clamp(84px,10.5vw,116px);height:clamp(84px,10.5vw,116px);
+  background:none !important;border-bottom:0 !important;box-shadow:none !important;
+  border-radius:0 !important;color:#2f7fd4;gap:1px;
+  filter:drop-shadow(0 4px 8px rgba(20,40,80,.45));
+}
+#btnRoll::after{display:none}
+#btnRoll .fb2{width:56%;height:56%}
+#btnRoll small{color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.55);font-size:clamp(10px,1.2vw,13px)}
+#knob{
+  background:radial-gradient(circle at 32% 26%,#ffb0a2 0%,#e0402f 55%,#8f2318 100%);
+  box-shadow:inset 0 -4px 8px rgba(0,0,0,.3), 0 6px 14px rgba(0,0,0,.3);
+}
+#stick{
+  background:radial-gradient(circle at 50% 40%, rgba(255,255,255,.12), rgba(40,50,66,.45));
+  box-shadow:inset 0 4px 12px rgba(0,0,0,.28);
+}
+
+/* ---- ปุ่มล็อบบี้ให้ดูนูนขึ้น (ขนาดยังยืดตามจอ) ---- */
+.tabbtn{box-shadow:0 10px 22px rgba(20,40,60,.28), inset 0 3px 0 rgba(255,255,255,.3)}
+.joinbtn{box-shadow:0 14px 30px rgba(60,20,120,.4), inset 0 4px 0 rgba(255,255,255,.28)}
+
+@media (max-width:900px){
+  .zoombar{bottom:196px;right:10px}
+  .zoombar button{width:40px;height:40px;font-size:19px}
+  .turnbar{bottom:168px;left:16px}
+  #btnTurnL,#btnTurnR{width:48px;height:46px;font-size:20px}
+  #btnMain{width:96px;height:96px;font-size:16px}
+  .chatpanel{width:44vw;right:8px}
+  .chatrow input{font-size:11px;padding:6px 10px}
+}
+
+
+/* ---- รูปประจำตัว ---- */
+.lvstar{
+  border:0;cursor:pointer;font-size:clamp(24px,3vw,34px);line-height:1;padding:0;
+  overflow:hidden;background-size:cover;background-position:center;
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,.18), 0 3px 8px rgba(20,40,60,.25);
+}
+.avgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:7px;margin:6px 0 12px}
+.avgrid button{
+  aspect-ratio:1;border:0;border-radius:12px;background:#f4f6f9;font-size:22px;cursor:pointer;
+  border-bottom:3px solid #dfe4ea;
+}
+.avgrid button.on{background:#3fb36a;border-bottom-color:#2f8a52}
+
+/* ---- คำใบ้ตอนล็อกท่า ---- */
+.lockhint{
+  position:absolute;left:50%;bottom:calc(clamp(96px, calc(var(--ui) * 13), 170px) + env(safe-area-inset-bottom, 0px));
+  transform:translateX(-50%);
+  background:rgba(47,127,212,.94);color:#fff;border-radius:999px;
+  padding:calc(var(--ui) * 0.6) calc(var(--ui) * 1.5);
+  font-size:clamp(9px, calc(var(--ui) * 1.15), 14px);font-weight:600;white-space:nowrap;
+}
+@media (max-width:900px){ .lockhint{bottom:176px;font-size:11.5px;padding:6px 13px} }
+
+
+/* ================================================================
+   จอแคบ / มือถือแนวตั้ง
+   เดิม UI จัดไว้สำหรับแนวนอนอย่างเดียว พอเป็นแนวตั้งปุ่มจะล้นออกนอกจอ
+   ตรงนี้จัดใหม่: ปุ่มเข้าร่วมเกมเต็มบรรทัดบน แล้วปุ่มย่อยหกปุ่มเรียงแถวล่าง
+   ================================================================ */
+@media (orientation: portrait), (max-width: 760px) {
+
+  /* ---- แถบล่างล็อบบี้ ---- */
+  .lobbottom{
+    flex-wrap:wrap;justify-content:center;gap:7px;
+    padding:8px 8px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+  .joinbtn{
+    order:1;flex:1 1 100%;min-width:0;width:100%;
+    padding:13px;font-size:19px;border-radius:20px;border-bottom-width:6px;
+  }
+  .joinbtn svg{width:24px;height:24px}
+  .side{order:2;flex:1 1 0;min-width:0;gap:5px;justify-content:center}
+  .tabbtn{max-width:none}
+
+  /* ---- แถบบนล็อบบี้ ---- */
+  .lobtop{
+    flex-wrap:wrap;gap:6px;padding:calc(6px + env(safe-area-inset-top, 0px)) 8px 6px;
+    align-items:center;
+  }
+  .lvcard{order:1;flex:1 1 auto;min-width:0;padding:4px 12px 4px 4px}
+  .lobright{order:2;flex:0 0 auto}
+  .livebar{order:3;flex:1 1 100%;justify-content:center;gap:6px}
+  .lvinfo{min-width:0;flex:1}
+  .lvinfo > b{font-size:11.5px}
+  .xpbar{height:12px}
+  .lvstar{width:30px;height:30px;font-size:18px;border-radius:10px}
+  .pill.big{font-size:15px;padding:5px 12px 5px 6px}
+  .pill.big .coin{width:22px;height:22px}
+  .exitbtn{width:34px;height:32px;font-size:15px;border-radius:11px}
+  .musicbtn{width:34px;height:32px;font-size:14px}
+  .whoami{
+    position:static;order:4;flex:1 1 100%;text-align:center;max-width:none;
+    background:none;color:rgba(255,255,255,.9);text-shadow:0 1px 3px rgba(0,0,0,.5);
+    padding:0;font-size:11.5px;
+  }
+
+  /* ---- แผงเนื้อหา ---- */
+  .paneldock{
+    left:8px;right:8px;width:auto;
+    top:calc(96px + env(safe-area-inset-top, 0px));
+    bottom:calc(132px + env(safe-area-inset-bottom, 0px));
+  }
+  .cards{grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:7px}
+  .card2 .pic{width:54px;height:54px}
+  .card2 b{font-size:11px}
+  .card2 em{font-size:9.5px}
+
+  /* ---- HUD ในเกม ---- */
+  .topbar{top:calc(6px + env(safe-area-inset-top, 0px));gap:6px;flex-wrap:nowrap}
+  .topright{
+    right:8px;top:calc(6px + env(safe-area-inset-top, 0px));gap:6px;
+  }
+  .chatpanel{right:8px;width:46vw;top:calc(58px + env(safe-area-inset-top, 0px))}
+  .chatrow input{font-size:11.5px;padding:7px 10px}
+  .chatrow button{padding:0 12px;font-size:12px}
+  #stick{left:18px;bottom:calc(18px + env(safe-area-inset-bottom, 0px))}
+  .roompanel{display:none}
+  #knob{width:54px;height:54px;margin:-27px 0 0 -27px}
+  .btns{
+    right:12px;bottom:calc(20px + env(safe-area-inset-bottom, 0px));gap:9px;
+  }
+  #btnMain{width:82px;height:82px;font-size:15px}
+  #btnJump{width:66px;height:66px;font-size:11px}
+  #btnRoll{width:66px;height:66px;font-size:10px}
+  .turnbar{left:14px;bottom:calc(146px + env(safe-area-inset-bottom, 0px));gap:6px}
+  #btnTurnL,#btnTurnR{width:44px;height:42px;font-size:18px}
+  .lockhint{bottom:calc(200px + env(safe-area-inset-bottom, 0px));font-size:11px}
+  .missbar{top:calc(72px + env(safe-area-inset-top, 0px));font-size:11.5px}
+  .spect{bottom:calc(200px + env(safe-area-inset-bottom, 0px));font-size:12.5px;padding:8px 16px}
+
+  /* ---- หน้าเข้าสู่ระบบ ---- */
+  .card{padding:20px 16px 16px;border-radius:20px}
+  h1{font-size:30px}
+  .tag{font-size:12.5px}
+}
+
+/* จอเตี้ยมาก ๆ (แนวนอนบนมือถือเล็ก) */
+@media (orientation: landscape) and (max-height: 430px) {
+  .paneldock{top:52px;bottom:86px}
+  .lobbottom{padding:6px 10px 8px}
+}
+
+/* ป้ายบอกให้หมุนจอตอนอยู่ในเกมแนวตั้ง เล่นแนวนอนถนัดกว่ามาก */
+#rotate{
+  position:fixed;left:50%;bottom:calc(120px + env(safe-area-inset-bottom, 0px));
+  transform:translateX(-50%);z-index:35;
+  background:rgba(30,37,48,.92);color:#fff;border-radius:999px;
+  padding:9px 18px;font-size:12.5px;font-weight:600;white-space:nowrap;
+  display:none;pointer-events:auto;
+}
+@media (orientation: portrait) {
+  #hud:not(.hidden) ~ #rotate{display:block}
+}
+
+
+/* ================================================================
+   ไอคอน 3 มิติจากชีตรูป ui/icons.png (ตาราง 3x3)
+   ถ้ายังไม่มีไฟล์ เกมจะใช้ไอคอน SVG เดิมแทนโดยอัตโนมัติ
+   ================================================================ */
+.ico3d{display:none}
+body.has3d .ico3d{
+  display:block;flex:none;
+  background-image:url('ui/icons.png');
+  background-size:300% 300%;
+  background-repeat:no-repeat;
+  width:clamp(28px,3.8vw,48px);height:clamp(28px,3.8vw,48px);
+  filter:drop-shadow(0 2px 3px rgba(20,40,60,.28));
+}
+body.has3d .tabbtn svg,
+body.has3d .btns svg{display:none}
+
+.ico3d[style*="--c:0"]{background-position:0% 0%}
+.ico3d[style*="--c:1"]{background-position:50% 0%}
+.ico3d[style*="--c:2"]{background-position:100% 0%}
+.ico3d[style*="--c:3"]{background-position:0% 50%}
+.ico3d[style*="--c:4"]{background-position:50% 50%}
+.ico3d[style*="--c:5"]{background-position:100% 50%}
+.ico3d[style*="--c:6"]{background-position:0% 100%}
+.ico3d[style*="--c:7"]{background-position:50% 100%}
+.ico3d[style*="--c:8"]{background-position:100% 100%}
+
+body.has3d .ico3d.big{width:clamp(30px,4.5vw,48px);height:clamp(30px,4.5vw,48px)}
+body.has3d .ico3d.sm{width:clamp(18px,2.4vw,26px);height:clamp(18px,2.4vw,26px)}
+body.has3d #btnJump,body.has3d #btnMain{gap:1px;font-size:clamp(9px,1.1vw,12px)}
+
+/* เลเวลในรายชื่อผู้เล่น */
+#roster .lv{
+  display:inline-block;background:#2f7fd4;color:#fff;border-radius:7px;
+  padding:1px 7px;font-size:11px;margin-right:8px;font-weight:700;
+}
+#roster s{display:flex;align-items:center;font-size:12.5px;color:var(--muted);font-weight:600}
+
+
+/* ================= รายชื่อผู้เล่นในห้อง (ล็อบบี้) ================= */
+.roompanel{
+  position:absolute;left:12px;top:calc(112px + env(safe-area-inset-top, 0px));
+  width:clamp(200px,22vw,290px);max-height:46vh;
+  background:rgba(255,255,255,.93);border-radius:18px;padding:10px 12px;
+  box-shadow:0 12px 30px rgba(20,40,60,.25);display:flex;flex-direction:column;
+}
+.rphead{display:flex;align-items:baseline;justify-content:space-between;gap:8px;
+  padding-bottom:7px;border-bottom:1px solid var(--line);margin-bottom:5px}
+.rphead b{font-size:clamp(14px,1.7vw,17px)}
+.rphead span{font-size:12px;color:var(--muted);font-weight:700}
+.rplist{overflow-y:auto;-webkit-overflow-scrolling:touch}
+.rprow{display:flex;align-items:center;gap:7px;padding:5px 1px;font-size:13px}
+.rprow + .rprow{border-top:1px solid #eef1f5}
+.rprow .lv{background:#2f7fd4;color:#fff;border-radius:6px;padding:1px 6px;
+  font-size:10.5px;font-weight:700;flex:none}
+.rprow .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rprow .rl{font-size:11px;font-weight:700;flex:none}
+.rprow .rl.hide{color:#c98f0f}
+.rprow .rl.seek{color:var(--seeker)}
+.rprow .rl.gone{color:#9aa2ae}
+.rprow .bot{font-size:9.5px;background:#eef1f5;color:var(--muted);
+  border-radius:5px;padding:1px 5px;flex:none}
+.rpempty{font-size:12.5px;color:var(--muted);padding:8px 2px;line-height:1.6}
+
+/* ================= ปุ่มเลือกภาษา ================= */
+.langrow{display:flex;gap:8px;margin-bottom:10px}
+.langrow button{
+  flex:1;background:#eef1f5;border:0;border-radius:12px;padding:11px;
+  font:inherit;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;
+  border-bottom:3px solid #dfe4ea;
+}
+.langrow button.on{background:#2f7fd4;color:#fff;border-bottom-color:#245f9f}
+
+/* ================= ป้ายร่างที่ปลอมตัว (แทนการ์ดบทบาทเดิม) ================= */
+.propchip{
+  position:absolute;left:50%;transform:translateX(-50%);
+  top:calc(74px + env(safe-area-inset-top, 0px));white-space:nowrap;
+  background:none;padding:0;box-shadow:none;
+}
+.propchip b{
+  font-size:clamp(17px, calc(var(--ui) * 1.9), 28px);color:#fff;
+  text-shadow:0 2px 5px rgba(0,0,0,.6), 0 0 3px rgba(30,60,110,.9);
+}
+
+
+/* ================= ชีตไอคอนชุดที่สอง (เหรียญ / เปลี่ยนร่าง / หัวใจ / เลเวล) ================= */
+.ico2{display:none}
+body.has2 .ico2{
+  display:block;flex:none;
+  background-image:url('ui/icons2.png');
+  background-size:200% 200%;
+  background-repeat:no-repeat;
+  width:clamp(24px,3vw,34px);height:clamp(24px,3vw,34px);
+}
+body.has2 .fb2{display:none}
+.ico2[style*="--d:0"]{background-position:0% 0%}
+.ico2[style*="--d:1"]{background-position:100% 0%}
+.ico2[style*="--d:2"]{background-position:0% 100%}
+.ico2[style*="--d:3"]{background-position:100% 100%}
+body.has2 .ico2.big{width:clamp(46px,6vw,68px);height:clamp(46px,6vw,68px)}
+body.has2 .coin3{width:clamp(26px,3.2vw,38px);height:clamp(26px,3.2vw,38px)}
+body.has2 .pill.big .coin3{width:clamp(32px,4vw,48px);height:clamp(32px,4vw,48px)}
+
+/* ไอคอนกล่อง/ตำรวจบนแถบบนใช้รูป 3 มิติแทน SVG */
+.hicon3{display:none}
+body.has3d .hicon3{
+  display:block;width:clamp(28px,3.6vw,44px);height:clamp(28px,3.6vw,44px);
+}
+body.has3d .hicon.fb{display:none}
+
+/* ================= หลอดเลเวล + หัวใจ มุมซ้ายบนในเกม ================= */
+.vitals{
+  position:absolute;left:12px;top:calc(10px + env(safe-area-inset-top, 0px));
+  display:flex;flex-direction:column;align-items:flex-start;
+  gap:clamp(6px, calc(var(--ui) * 1), 22px);
+}
+.xpmini{
+  position:relative;
+  width:clamp(190px, calc(var(--ui) * 20), 360px);
+  height:clamp(30px, calc(var(--ui) * 2.9), 50px);
+  border-radius:999px;background:rgba(20,28,40,.6);overflow:hidden;
+  box-shadow:inset 0 3px 7px rgba(0,0,0,.45), 0 4px 10px rgba(20,40,60,.35);
+  border:2px solid rgba(255,255,255,.28);
+}
+.xpmini i{
+  position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:999px;
+  background:linear-gradient(90deg,#7ee0ff,#2f7fd4);transition:width .4s ease;
+}
+.xpmini span{
+  position:absolute;inset:0;display:grid;place-items:center;
+  font-size:clamp(15px, calc(var(--ui) * 1.5), 23px);font-weight:700;color:#fff;
+  text-shadow:0 2px 3px rgba(0,0,0,.75);
+}
+
+
+/* ================= นาฬิกาทรายบนแถบเวลา ================= */
+.clock{
+  display:grid;grid-template-columns:1fr;align-items:center;
+  column-gap:clamp(5px,0.8vw,11px);justify-items:center;
+}
+.hourglass{
+  display:none;grid-row:1 / span 2;grid-column:1;
+  width:clamp(34px, calc(var(--ui) * 3.6), 62px);height:clamp(34px, calc(var(--ui) * 3.6), 62px);
+  background-image:url('ui/timer.png');background-size:contain;
+  background-repeat:no-repeat;background-position:center;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.35));
+}
+body.hasTimer .clock{grid-template-columns:auto 1fr}
+body.hasTimer .hourglass{display:block}
+body.hasTimer .clock > span,body.hasTimer .clock > em{grid-column:2;justify-self:center}
+.clock > span,.clock > em{width:100%;text-align:center}
+
+/* ================= ปุ่มแอ็กชันใหญ่ระดับจอยสติ๊ก ================= */
+#btnMain{
+  width:clamp(106px, calc(var(--ui) * 12), 190px);height:clamp(106px, calc(var(--ui) * 12), 190px);
+  font-size:clamp(15px, calc(var(--ui) * 1.7), 25px);
+}
+#btnJump{
+  width:clamp(100px, calc(var(--ui) * 11.4), 182px);height:clamp(100px, calc(var(--ui) * 11.4), 182px);
+  font-size:clamp(14px, calc(var(--ui) * 1.55), 23px);
+}
+#btnRoll{
+  width:clamp(94px, calc(var(--ui) * 10.6), 172px);height:clamp(94px, calc(var(--ui) * 10.6), 172px);
+}
+#btnRoll small{font-size:clamp(12px,1.5vw,16px)}
+body.has2 #btnRoll .ico2.big{width:clamp(58px, calc(var(--ui) * 6.4), 114px);height:clamp(58px, calc(var(--ui) * 6.4), 114px)}
+body.has3d #btnJump .ico3d.big{width:clamp(58px, calc(var(--ui) * 6.4), 114px);height:clamp(58px, calc(var(--ui) * 6.4), 114px)}
+.btns{gap:clamp(8px,1.2vw,16px)}
+
+/* ================= ไอคอนเมนูล็อบบี้ใหญ่ขึ้นอีก ================= */
+body.has3d .tabbtn .ico3d{width:clamp(32px,4.1vw,52px);height:clamp(32px,4.1vw,52px)}
+.tabbtn svg{width:clamp(28px,3.8vw,48px);height:clamp(28px,3.8vw,48px)}
+.tabbtn{padding:clamp(7px,1.2vw,14px) 2px clamp(6px,1vw,12px)}
+.jicon{width:clamp(28px,3.6vw,48px);height:clamp(28px,3.6vw,48px)}
+.tabbtn{max-width:132px;font-size:clamp(9.5px,1.15vw,14px)}
+.joinbtn{font-size:clamp(15px,2vw,24px);padding:clamp(10px,1.3vw,16px) clamp(10px,1.8vw,26px)}
+
+@media (orientation: portrait), (max-width: 760px) {
+  .xpmini{width:clamp(150px,42vw,220px);height:26px}
+  .xpmini span{font-size:13px}
+  .vitals{gap:12px}
+  #btnMain{width:104px;height:104px;font-size:16px}
+  #btnJump{width:98px;height:98px;font-size:14px}
+  #btnRoll{width:92px;height:92px}
+  body.has2 #btnRoll .ico2.big,body.has3d #btnJump .ico3d.big{width:54px;height:54px}
+  body.has3d .tabbtn .ico3d{width:34px;height:34px}
+  .tabbtn svg{width:30px;height:30px}
+}
+
+
+/* รูปประจำตัวที่อัปโหลดเอง */
+.lvstar.hasimg{background-color:transparent;box-shadow:0 3px 8px rgba(20,40,60,.3)}
+.lvstar.hasimg span{display:none}
+.avup{
+  width:100%;background:#eef1f5;border:2px dashed #c3ccd8;border-radius:12px;
+  padding:12px;font:inherit;font-size:13px;font-weight:700;color:var(--muted);
+  cursor:pointer;margin-bottom:10px;
+}
+.avpreview{
+  width:64px;height:64px;border-radius:16px;background-size:cover;background-position:center;
+  margin:0 auto 8px;display:none;box-shadow:0 3px 10px rgba(20,40,60,.25);
+}
+.avpreview.on{display:block}
+
+
+/* ================================================================
+   จอเตี้ย (มือถือแนวนอน) — ย่อของที่ไม่จำเป็นและกันซ้อนทับ
+   ================================================================ */
+@media (max-height: 520px) {
+  .roomtag,.fps{display:none}
+  .topright{gap:5px}
+
+  .vitals{left:8px;gap:5px}
+  .propchip{top:calc(58px + env(safe-area-inset-top, 0px))}
+  .chatpanel{width:34vw}
+  #feed{max-height:22vh}
+  .stickhint,.lockhint{display:none}
+  #stick{left:44px;bottom:calc(12px + env(safe-area-inset-bottom, 0px))}
+  .btns{right:10px;bottom:calc(12px + env(safe-area-inset-bottom, 0px));gap:7px}
+  #btnLock{left:calc(44px + clamp(124px, calc(var(--ui) * 13), 200px) + 10px);bottom:calc(18px + env(safe-area-inset-bottom, 0px))}
+  .rosterbtn{right:8px}
+}
+@media (max-height: 400px) {
+  .vitals .xpmini{width:clamp(96px, 26vw, 150px);height:16px}
+  .xpmini span{font-size:9.5px}
+}
+
+
+/* ================= แถบเลื่อนดูผู้เล่นตอนเป็นผู้ชม ================= */
+.specbar{
+  position:absolute;left:50%;transform:translateX(-50%);
+  bottom:calc(clamp(58px, calc(var(--ui) * 8), 96px) + env(safe-area-inset-bottom, 0px));
+  display:flex;align-items:center;gap:calc(var(--ui) * 0.8);
+  background:rgba(30,37,48,.9);color:#fff;border-radius:999px;
+  padding:calc(var(--ui) * 0.4) calc(var(--ui) * 0.6);pointer-events:auto;
+}
+.specbar span{font-size:clamp(10px, calc(var(--ui) * 1.25), 15px);padding:0 4px;white-space:nowrap}
+.specbar b{color:#9fe6b8}
+.specbar button{
+  border:0;border-radius:50%;background:rgba(255,255,255,.92);color:var(--ink);
+  width:clamp(26px, calc(var(--ui) * 3.4), 40px);height:clamp(26px, calc(var(--ui) * 3.4), 40px);
+  font-size:clamp(14px, calc(var(--ui) * 1.9), 22px);cursor:pointer;line-height:1;
+}
+.specbar button:active{transform:scale(.92)}
+
+
+/* ยืนยันออกจากห้อง */
+.askcard .warn{color:var(--seeker)}
+button.primary.danger{background:#e0402f;border-bottom-color:#a82d20}
+
+
+/* พิลจำนวนคนซ่อน/คนหา โปร่งใส */
+.pill.count{
+  background:rgba(255,255,255,.28);border-bottom-color:rgba(255,255,255,.35);
+  backdrop-filter:blur(6px);box-shadow:none;color:#fff;
+  text-shadow:0 2px 4px rgba(0,0,0,.55);
+}
+.count.hiders,.count.seekers{color:#fff}
+
+/* นาฬิกาทรายกับเวลาชิดซ้าย */
+body.hasTimer .clock{grid-template-columns:auto auto;justify-content:start;padding-left:calc(var(--ui) * 0.9)}
+body.hasTimer .clock > span,body.hasTimer .clock > em{justify-self:start;text-align:left;width:auto}
+
+/* ชื่อสิ่งของห่างจากเวลาขึ้น */
+.propchip{top:calc(clamp(96px, calc(var(--ui) * 9.5), 130px) + env(safe-area-inset-top, 0px)) !important}
+
+/* ช่องแชทบนมือถือสั้นลง */
+@media (max-height: 520px){
+  .chatpanel{width:clamp(130px, 24vw, 200px)}
+  .chatrow input{padding:5px 9px;font-size:10.5px}
+  .chatrow button{padding:0 9px;font-size:10.5px}
+}
+
+/* ปุ่มเปลี่ยนร่างมีพื้นหลังสีสัน */
+#btnRoll{
+  background:linear-gradient(160deg,#ff9ad5 0%,#b26bff 55%,#5b3fd6 100%) !important;
+  border-radius:30% !important;border-bottom:clamp(4px, calc(var(--ui) * 0.5), 7px) solid #3d2a9a !important;
+  box-shadow:0 8px 18px rgba(80,40,160,.4), inset 0 3px 0 rgba(255,255,255,.35) !important;
+  color:#fff;filter:none;
+}
+#btnRoll::after{display:block}
+#btnRoll small{text-shadow:0 1px 3px rgba(0,0,0,.5)}
+
+/* ปุ่มกระโดดใหญ่ขึ้น */
+#btnJump{
+  width:clamp(112px, calc(var(--ui) * 12.6), 196px);height:clamp(112px, calc(var(--ui) * 12.6), 196px);
+}
+body.has3d #btnJump .ico3d.big{width:clamp(66px, calc(var(--ui) * 7.2), 124px);height:clamp(66px, calc(var(--ui) * 7.2), 124px)}
+
+/* ปุ่มล็อกใช้รูปแม่กุญแจ ขนาดใหญ่ขึ้นเล็กน้อย */
+body.hasLock #btnLock{width:clamp(64px, calc(var(--ui) * 7), 100px);height:clamp(64px, calc(var(--ui) * 7), 100px)}
+
+/* แผงเมนูล็อบบี้ไม่บังชื่อกับหลอด exp */
+.paneldock{top:calc(clamp(118px, calc(var(--ui) * 11), 150px) + env(safe-area-inset-top, 0px)) !important}
+@media (orientation: portrait), (max-width: 760px){
+  .paneldock{top:calc(140px + env(safe-area-inset-top, 0px)) !important}
+}
+
+/* ปุ่มเมนูหน้าโฮมแบบมีมิติขึ้น: ไล่สีสองชั้น ขอบสว่างด้านบน เงาลึกด้านล่าง */
+.tabbtn{
+  position:relative;overflow:hidden;
+  box-shadow:0 10px 22px rgba(20,40,60,.28), inset 0 3px 0 rgba(255,255,255,.42), inset 0 -3px 0 rgba(0,0,0,.12);
+  text-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+.tabbtn::before{
+  content:'';position:absolute;left:8%;top:6%;width:84%;height:38%;border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0));pointer-events:none;
+}
+.c-blue{background:linear-gradient(180deg,#63b4f5,#2f8fe0 60%,#2477c2)}
+.c-green{background:linear-gradient(180deg,#5dd4b0,#2fa886 60%,#238a6d)}
+.c-orange{background:linear-gradient(180deg,#ffbb4d,#f09a1e 60%,#d17f0a)}
+.c-cyan{background:linear-gradient(180deg,#5fc4f5,#2f9ee0 60%,#227fb9)}
+.c-pink{background:linear-gradient(180deg,#ff7aa2,#e8467a 60%,#c2325f)}
+.c-gray{background:linear-gradient(180deg,#a3adbd,#7a8494 60%,#626c7c)}
+.joinbtn{
+  position:relative;overflow:hidden;text-shadow:0 2px 3px rgba(0,0,0,.35);
+  background:linear-gradient(180deg,#b487ff 0%,#8b5cf6 50%,#6b3fd0 100%);
+}
+.joinbtn::before{
+  content:'';position:absolute;left:4%;top:5%;width:92%;height:40%;border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.36),rgba(255,255,255,0));pointer-events:none;
+}
+
+/* ครอปรูปโปรไฟล์ */
+.avcrop{margin-bottom:12px;text-align:center}
+.avcrop canvas{
+  width:min(220px,70vw);height:min(220px,70vw);border-radius:18px;background:#e9edf3;
+  touch-action:none;cursor:grab;box-shadow:0 4px 12px rgba(20,40,60,.2);display:block;margin:0 auto 6px;
+}
+.avcrop input[type=range]{width:100%;margin:6px 0 10px}
+
+
+/* ================= ปรับตามรอบล่าสุด ================= */
+/* นาฬิกาแบบเรียบ: ตัวเลขเวลาอย่างเดียว กึ่งกลาง */
+.clock.plain{grid-template-columns:1fr !important;justify-items:center !important;padding-left:clamp(10px, calc(var(--ui) * 1.7), 28px) !important}
+.clock.plain > span{text-align:center !important;width:100% !important;justify-self:center !important}
+.clock.plain .hourglass{display:none !important}
+
+/* เลขห้องกับ fps เหนือหลอด exp ไม่มีพื้นหลัง */
+.metaline{
+  display:flex;gap:calc(var(--ui) * 1.2);color:#fff;
+  font-size:clamp(11px, calc(var(--ui) * 1.15), 15px);font-weight:700;
+  text-shadow:0 2px 4px rgba(0,0,0,.6);padding-left:4px;
+}
+.metaline span{background:none;padding:0;border-radius:0}
+
+/* ปุ่มกระโดดใหญ่ขึ้นอีก และปุ่มเปลี่ยนของใหญ่ขึ้น */
+#btnJump{width:clamp(124px, calc(var(--ui) * 14), 220px) !important;height:clamp(124px, calc(var(--ui) * 14), 220px) !important}
+body.has3d #btnJump .ico3d.big{width:clamp(76px, calc(var(--ui) * 8.2), 140px) !important;height:clamp(76px, calc(var(--ui) * 8.2), 140px) !important}
+#btnRoll{width:clamp(108px, calc(var(--ui) * 12), 190px) !important;height:clamp(108px, calc(var(--ui) * 12), 190px) !important}
+body.has2 #btnRoll .ico2.big{width:clamp(68px, calc(var(--ui) * 7.4), 126px) !important;height:clamp(68px, calc(var(--ui) * 7.4), 126px) !important}
+
+/* ไอคอนเมนูล็อบบี้ใหญ่ขึ้น แต่กรอบเท่าเดิม */
+body.has3d .tabbtn .ico3d{width:clamp(44px,5.6vw,72px) !important;height:clamp(44px,5.6vw,72px) !important;margin:-4px 0 -2px}
+.tabbtn svg{width:clamp(38px,5vw,64px);height:clamp(38px,5vw,64px);margin:-3px 0 -2px}
+
+/* ป้ายชื่อด่านตอนเริ่มรอบ */
+.stagebanner{
+  position:absolute;left:50%;top:38%;transform:translate(-50%,-50%) scale(.8);
+  background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(235,240,248,.96));
+  color:#1e2530;border-radius:22px;padding:calc(var(--ui) * 1.2) calc(var(--ui) * 3.4);
+  font-size:clamp(22px, calc(var(--ui) * 3.2), 44px);font-weight:700;white-space:nowrap;
+  box-shadow:0 18px 44px rgba(20,40,60,.35), inset 0 3px 0 rgba(255,255,255,.9);
+  border-bottom:6px solid #cfd6df;opacity:0;pointer-events:none;
+}
+.stagebanner.show{animation:stagein 3.2s ease forwards}
+@keyframes stagein{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.8)}
+  12%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}
+  20%{transform:translate(-50%,-50%) scale(1)}
+  80%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-56%) scale(.96)}
+}
+
+
+/* ================= ปรับรอบนี้ ================= */
+/* เลขห้องบนแถบ exp ในล็อบบี้ */
+.lvinfo > b{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.lobroom{font-size:clamp(11px, calc(var(--ui) * 1.1), 15px);color:rgba(255,255,255,.85);font-weight:600}
+
+/* ตัวเลขเวลาใหญ่ขึ้น กึ่งกลาง */
+.clock.plain{min-width:clamp(112px, calc(var(--ui) * 13), 200px)}
+.clock.plain > span{font-size:clamp(24px, calc(var(--ui) * 2.9), 40px) !important;line-height:1.05}
+.clock.plain > em.hidden{display:none}
+
+/* ป้ายชื่อด่านโปร่งใส */
+.stagebanner{
+  background:rgba(18,26,38,.42) !important;color:#fff !important;
+  border-bottom:0 !important;backdrop-filter:blur(6px);
+  text-shadow:0 2px 6px rgba(0,0,0,.6);
+  box-shadow:0 12px 32px rgba(0,0,0,.25) !important;
+}
+
+/* ปุ่มต่อยใหญ่ขึ้น */
+#btnMain{width:clamp(124px, calc(var(--ui) * 14.5), 220px) !important;height:clamp(124px, calc(var(--ui) * 14.5), 220px) !important;font-size:clamp(16px, calc(var(--ui) * 1.9), 26px) !important}
+#btnMain .ico3d.big{width:clamp(78px, calc(var(--ui) * 8.6), 140px) !important;height:clamp(78px, calc(var(--ui) * 8.6), 140px) !important}
+
+/* หลอด exp ชิดเลขห้อง/fps มากขึ้น */
+.vitals{gap:clamp(4px, calc(var(--ui) * 0.5), 10px) !important}
+.metaline{margin-bottom:-2px}
+.vitals .hearts{margin-top:clamp(6px, calc(var(--ui) * 0.8), 14px)}
+
+
+/* ปุ่มเปลี่ยนสิ่งของ: เล็กลงนิด มีคำกำกับ */
+#btnRoll{width:clamp(96px, calc(var(--ui) * 10.6), 168px) !important;height:clamp(96px, calc(var(--ui) * 10.6), 168px) !important;gap:0 !important}
+body.has2 #btnRoll .ico2.big{width:clamp(50px, calc(var(--ui) * 5.6), 92px) !important;height:clamp(50px, calc(var(--ui) * 5.6), 92px) !important}
+#btnRoll .rlabel{color:#fff;font-size:clamp(11px, calc(var(--ui) * 1.25), 16px);font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.5);line-height:1.1}
+#btnRoll small{margin-top:1px;opacity:.9}
+
+
+/* ================= รอบนี้ ================= */
+/* นาฬิกากึ่งกลางพื้นหลัง ทั้งล็อบบี้และในเกม */
+.clock.plain{
+  display:flex !important;align-items:center !important;justify-content:center !important;
+  padding-left:clamp(10px, calc(var(--ui) * 1.7), 28px) !important;
+  padding-right:clamp(10px, calc(var(--ui) * 1.7), 28px) !important;
+}
+.clock.plain > span{margin:0 auto;text-align:center !important}
+/* เลขห้องกับ fps กึ่งกลางเหนือหลอด exp */
+.metaline{justify-content:center;width:clamp(190px, calc(var(--ui) * 20), 360px);padding-left:0}
+/* ปุ่มสุ่มของสวนสัตว์ */
+.gacha.zoo{background:linear-gradient(180deg,#5dd4b0,#2fa886 60%,#238a6d);border-bottom-color:#1c6f57}
+.gbtns{flex-wrap:wrap}
+.gbtns .gacha{flex:1 1 30%;min-width:120px}
+.grpttl{margin:12px 0 6px;font-size:14px}
+.grpttl span{color:var(--muted);font-weight:600;font-size:12px;margin-left:6px}
+
+
+/* ================= ปุ่มวิ่ง + หลอดพลัง ================= */
+.runbtn{
+  position:absolute;pointer-events:auto;display:grid;place-items:center;
+  left:calc(24px + clamp(124px, calc(var(--ui) * 13), 200px) + 16px);
+  bottom:calc(34px + clamp(58px, calc(var(--ui) * 6.4), 92px) + 14px);
+  width:clamp(58px, calc(var(--ui) * 6.4), 92px);height:clamp(58px, calc(var(--ui) * 6.4), 92px);
+  border:0;border-radius:26%;cursor:pointer;color:#f0a020;background:transparent;
+  filter:drop-shadow(0 4px 8px rgba(20,40,60,.4));opacity:.85;
+}
+.runbtn svg{width:74%;height:74%}
+.runbtn.on{color:#ffd166;opacity:1;transform:scale(1.06)}
+.runbtn.tired{color:#8a939f;opacity:.55}
+.runbtn:active{transform:translateY(3px) scale(.96)}
+.runbtn i{
+  position:absolute;left:14%;right:14%;bottom:4%;height:5px;border-radius:999px;
+  background:rgba(20,28,40,.5);overflow:hidden;
+}
+.runbtn i b{display:block;height:100%;width:100%;background:#ffd166;border-radius:999px;transition:width .12s linear}
+.runbtn.tired i b{background:#e0574a}
+@media (max-height: 520px){
+  .runbtn{left:calc(44px + clamp(124px, calc(var(--ui) * 13), 200px) + 8px);
+    bottom:calc(18px + clamp(58px, calc(var(--ui) * 6.4), 92px) + 10px)}
+}
+
+/* ================= โฆษณาแลกทอง ================= */
+.adbox{margin-bottom:12px}
+.adbtn{background:#fff6dc;border-color:#f0c429;color:#8a5c00}
+.adbtn:disabled{opacity:.5}
+.adcard{
+  width:min(360px,92vw);background:#fff;border-radius:22px;padding:20px;text-align:center;
+  box-shadow:0 22px 56px rgba(0,0,0,.4);
+}
+.adcard b{font-size:18px;display:block;margin:10px 0 2px}
+.adcard p{font-size:13.5px;color:var(--muted);margin-bottom:12px}
+.adscreen{
+  height:150px;border-radius:16px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#2b3a55,#1e2530);color:#fff;
+  font-size:44px;font-weight:700;font-variant-numeric:tabular-nums;
+}
+.adprog{height:8px;border-radius:999px;background:#eef1f5;overflow:hidden;margin-bottom:14px}
+.adprog i{display:block;height:100%;width:0;background:#f0c429;transition:width .9s linear}
