@@ -1,0 +1,16 @@
+{
+  "name": "เกมซ่อนหาของ — Prop Hunt Online",
+  "short_name": "ซ่อนหาของ",
+  "description": "ปลอมตัวเป็นสิ่งของในห้างสรรพสินค้า เล่นออนไลน์กับเพื่อน",
+  "start_url": "/",
+  "scope": "/",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#1a3a5c",
+  "theme_color": "#2f7fd4",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
